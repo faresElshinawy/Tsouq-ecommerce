@@ -1,0 +1,129 @@
+/* Additional Custom CSS for Customer Service Chat */
+
+/* Adjust the width and height of small avatars */
+.small-avatar {
+    width: 52px;
+    height: 52px;
+}
+
+/* CSS for Sender's (Customer's) Messages on the Right */
+.customer-message {
+    background-color: #696cff;
+    color: #fff;
+    border-radius: 10px;
+    padding: 10px;
+    max-width: 70%;
+    margin-bottom: 10px;
+    float: right; /* Place sender's messages on the right */
+}
+
+/* CSS for Receiver's (Representative's) Messages on the Left */
+.representative-message {
+    background-color: #f1f0f0;
+    border-radius: 10px;
+    padding: 10px;
+    max-width: 70%;
+    margin-bottom: 10px;
+    float: left; /* Place receiver's messages on the left */
+}
+
+/* Clear floats to prevent wrapping issues */
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+
+/* Style for the message timestamp */
+.message-data-time {
+    font-size: 12px;
+    color: #777;
+}
+
+/* Style for the chat card body to allow scrolling */
+.chat-history {
+    max-height: 400px; /* Adjust the maximum height as needed */
+    overflow-y: auto;
+}
+
+/* Style for the input area */
+.card-footer {
+    border-top: 1px solid #fff;
+    padding: 15px;
+}
+
+/* Style for the input field */
+.card-footer input[type="text"] {
+    border: none;
+    padding: 10px 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Style for the send button */
+.card-footer .input-group-append span.input-group-text {
+    border: none;
+    cursor: pointer;
+}
+
+/* Style for the send button icon */
+.card-footer .input-group-append span.input-group-text i {
+    font-size: 18px;
+}
+
+/* Style for the search input */
+.card-header input[type="text"] {
+    border: none;
+    padding: 10px 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0);
+}
+
+/* Style for the search icon */
+.card-header .input-group-prepend span.input-group-text {
+    border: none;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+/* Style for the chat list */
+.chat-list {
+    max-height: calc(100vh - 150px); /* Adjust the maximum height as needed */
+    overflow-y: auto;
+}
+
+/* Style for the chat list items */
+.chat-list .list-group-item {
+    cursor: pointer;
+}
+
+/* Style for the chat list item's avatar */
+.chat-list .list-group-item img.small-avatar {
+    margin-right: 10px;
+}
+
+/* Style for the chat list item's user details */
+.chat-list .list-group-item .media {
+    align-items: center;
+}
+
+/* Style for the chat list item's user name */
+.chat-list .list-group-item .media h5 {
+    margin-bottom: 0;
+}
+
+/* Style for the chat list item's user status */
+.chat-list .list-group-item .media p.text-muted {
+    margin-bottom: 0;
+    font-size: 12px;
+}
+
+.chat-history {
+    height: 400px; /* Adjust the height as needed */
+    overflow-y: scroll;
+    scrollbar-width: none; /* Hide Firefox scrollbar */
+    -ms-overflow-style: none; /* Hide IE scrollbar */
+}
+
+.chat-history::-webkit-scrollbar {
+    width: 0; /* Hide Chrome and Safari scrollbar */
+}
