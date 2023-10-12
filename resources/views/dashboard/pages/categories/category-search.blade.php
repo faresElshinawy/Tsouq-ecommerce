@@ -19,7 +19,7 @@
                 <td>
                     <div class="col-sm-10">
                         @if (File::exists(public_path('uploads/categories/' . $category->image)) || filter_var($category->image,FILTER_VALIDATE_URL))
-                            <img
+                            <img style="width:200px;hight:200px"
 
                             @if (filter_var($category->image,FILTER_VALIDATE_URL))
 
@@ -32,7 +32,7 @@
                             @endif
 
                             alt
-                                class="w-px-100 h-auto rounded-circle img-fluid" />
+                                class="rounded-square" />
                         @else
                             <div style="width:100px;hight:100px">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 61.8 61.8"

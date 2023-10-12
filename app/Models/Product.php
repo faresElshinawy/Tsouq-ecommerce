@@ -36,8 +36,7 @@ class Product extends Model
     {
         return [
             'name'=>$this->name,
-            'description'=>$this->description,
-            'price'=>(float)$this->price
+            'description'=>$this->description
         ];
     }
 

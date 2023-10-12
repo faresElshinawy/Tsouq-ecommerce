@@ -18,7 +18,7 @@ trait CacheHelper {
         public function cacheQuery(string $table,int $minutes = 60,mixed $with = null,array $arrayOfConditions = [],string $collectionType = 'normal'){
             $this->getModel($table);
 
-            $cacheName = $table."_cached";
+            $cacheName = $collectionType == 'count' ? $table."_count" : $table."_cached";
 
             if(Cache::has($cacheName)){
                 return Cache::get($cacheName);
@@ -34,6 +34,9 @@ trait CacheHelper {
 
                 case "paginated":
                     $this->query = $this->query->paginate();
+                    break;
+                case 'count':
+                    $this->query = $this->query->count();
                     break;
             }
 
@@ -58,6 +61,9 @@ trait CacheHelper {
 
         // the function take the relations that you want to get with your main query
         public function with(mixed $with){
+            if($with == null){
+                return null;
+            }
             try{
                 if(!is_array($with)){
                     return $this->query = $this->query->with($with);

@@ -47,7 +47,7 @@ class ProductController extends Controller
 
     public function search(Request $request){
         if($request->ajax()){
-            $query = trim($request->get('query'));
+            $query = $request->get('query');
             $status = $request->get('status');
             $date_from = $request->get('date_from');
             $date_to = $request->get('date_to');

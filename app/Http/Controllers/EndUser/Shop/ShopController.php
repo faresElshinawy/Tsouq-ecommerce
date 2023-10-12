@@ -31,18 +31,17 @@ class ShopController extends Controller
             return $this->filter($request);
         }
 
-        $productsQuery = Product::query();
+        $products = Product::query();
         if ($request->get('query')) {
-            $search = trim($request->get('query'));
-            $productsQuery->where('name', 'like', "%{$search}%");
+            $search = $request->get('query');
+            $products = Product::search($search);
         }
-        $products = $productsQuery->paginate();
-        $products->count = $productsQuery->count();
+        $products = $products->paginate();
         $sizes = $this->cacheQuery('sizes', 60, 'products:id');
         $colors = $this->cacheQuery('colors', 60, 'products:id');
         $categories = $this->cacheQuery('categories', 60, 'products:id,category_id');
         $brands = $this->cacheQuery('brands', 60, 'products:id,brand_id');
-
+        $productsCount = $this->cacheQuery('products',60,null,[],'count');
 
         return view('endUser.pages.shop.index', [
             'products' => $products,
@@ -50,6 +49,7 @@ class ShopController extends Controller
             'colors' => $colors,
             'categories' => $categories,
             'brands' => $brands,
+            'productsCount'=>$productsCount
         ]);
     }
 
@@ -122,13 +122,16 @@ class ShopController extends Controller
         $colors = $this->cacheQuery('colors', 60, 'products:id');
         $categories = $this->cacheQuery('categories', 60, 'products:id,category_id');
         $brands = $this->cacheQuery('brands', 60, 'products:id,brand_id');
+        $productsCount = $this->cacheQuery('products',60,null,[],'count');
+
         return view('endUser.pages.shop.index', [
             'products' => $products,
             'sizes' => $sizes,
             'colors' => $colors,
             'categories' => $categories,
             'brands' => $brands,
-            'category_filter' => $category->id
+            'category_filter' => $category->id,
+            'productsCount'=>$productsCount
         ]);
     }
 
@@ -142,13 +145,16 @@ class ShopController extends Controller
         $colors = $this->cacheQuery('colors', 60, 'products:id');
         $categories = $this->cacheQuery('categories', 60, 'products:id,category_id');
         $brands = $this->cacheQuery('brands', 60, 'products:id,brand_id');
+        $productsCount = $this->cacheQuery('products',60,null,[],'count');
+
         return view('endUser.pages.shop.index', [
             'products' => $products,
             'sizes' => $sizes,
             'colors' => $colors,
             'categories' => $categories,
             'brands' => $brands,
-            'brand_filter' => $brand->id
+            'brand_filter' => $brand->id,
+            'productsCount'=>$productsCount
         ]);
     }
 }

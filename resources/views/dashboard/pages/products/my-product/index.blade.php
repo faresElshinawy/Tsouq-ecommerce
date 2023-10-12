@@ -26,9 +26,6 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Name</th>
-                                        <th>Description</th>
-                                        <th>Category</th>
-                                        <th>Brand</th>
                                         <th>Price</th>
                                         <th>Count</th>
                                         <th>Discount</th>
@@ -47,15 +44,12 @@
                                                 <i class="fab fa-bootstrap fa-lg text-primary me-3"></i>
                                                 <strong>{{ $product->name }}</strong>
                                             </td>
-                                            <td>{{ $product->description }}</td>
-                                            <td>{{ $product->category->name }}</td>
-                                            <td>{{ $product->brand->name }}</td>
                                             <td>{{ $product->price }}</td>
                                             <td>{{ $product->count }}</td>
                                             <td>{{ $product->discount }}</td>
                                             <td>
                                                 @if (File::exists(public_path('uploads/products/' . $product->image)) || filter_var($product->image,FILTER_VALIDATE_URL))
-                                                    <img
+                                                    <img style="width:200px;hight:200px"
 
                                                     @if (filter_var($product->image,FILTER_VALIDATE_URL))
 
@@ -68,7 +62,7 @@
                                                     @endif
 
                                                     alt
-                                                        class="w-px-100 h-auto rounded-circle img-fluid" />
+                                                        class="rounded-square" />
                                                 @else
                                                     <div style="width:100px;hight:100px">
                                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 61.8 61.8"
