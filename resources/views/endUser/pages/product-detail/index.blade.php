@@ -33,35 +33,23 @@
 
                     <div class="carousel-item active">
                         <img class="w-100 h-100 img-fluid"
-
-                        @if (filter_var($product->image,FILTER_VALIDATE_URL))
-
-                        src="{{ $product->image }}"
+                            @if (filter_var($product->image, FILTER_VALIDATE_URL)) src="{{ $product->image }}"
 
                         @else
 
-                        src="{{ asset('uploads/products/' . $product->image) }}"
-
-                        @endif
-
+                        src="{{ asset('uploads/products/' . $product->image) }}" @endif
                             alt="Image">
                     </div>
 
                     @foreach ($product->images as $image)
                         <div class="carousel-item">
                             <img class="w-100 h-100 img-fluid"
-
-                            @if (filter_var($image->image,FILTER_VALIDATE_URL))
-
-                            src="{{ $productImage->image }}"
+                                @if (filter_var($image->image, FILTER_VALIDATE_URL)) src="{{ $productImage->image }}"
 
                             @else
 
-                            src="{{ asset('uploads/products/' . $image->image) }}"
-
-                            @endif
-
-                            alt="Image">
+                            src="{{ asset('uploads/products/' . $image->image) }}" @endif
+                                alt="Image">
                         </div>
                     @endforeach
                 </div>
@@ -120,6 +108,12 @@
                         @break
 
                         @default
+                            <small class="far fa-star"></small>
+                            <small class="far fa-star"></small>
+                            <small class="far fa-star"></small>
+                            <small class="far fa-star"></small>
+                            <small class="far fa-star"></small>
+                        @break
                     @endswitch
                 </div>
                 <small class="pt-1">({{ $product->rates->count() }})</small>
@@ -186,7 +180,8 @@
                             <span class="text-muted text-center ml-3">Add To WishList</span>
                             @if (Auth::user()->count() > 0)
                                 @foreach (Auth::user()->wishlists as $wishlist)
-                                        <button class="dropdown-item btn" onclick="addToWishlist({{$wishlist->id}},{{$product->id}})">{{ $wishlist->name }}</button>
+                                    <button class="dropdown-item btn"
+                                        onclick="addToWishlist({{ $wishlist->id }},{{ $product->id }})">{{ $wishlist->name }}</button>
                                 @endforeach
                             @endif
                         </div>
@@ -288,6 +283,12 @@
                                                         @break
 
                                                         @default
+                                                            <small class="far fa-star"></small>
+                                                            <small class="far fa-star"></small>
+                                                            <small class="far fa-star"></small>
+                                                            <small class="far fa-star"></small>
+                                                            <small class="far fa-star"></small>
+                                                        @break
                                                     @endswitch
                                                 </span>
                                             </div>
@@ -371,26 +372,30 @@
                             <a href="{{ route('products-details.show', ['product' => $pro->id]) }}"
                                 class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View
                                 Detail</a>
-                                <div>
-                                    @auth
+                            <div>
+                                @auth
                                     <div class="dropdown">
                                         <a class="btn btn-sm text-dark p-0" data-toggle="dropdown">
-                                            <span class="d-none d-sm-block"><i class='bx bx-list-plus text-primary mr-1' style="font-size: 25px" ></i>More Options</span>
+                                            <span class="d-none d-sm-block"><i class='bx bx-list-plus text-primary mr-1'
+                                                    style="font-size: 25px"></i>More Options</span>
                                         </a>
                                         <div class="dropdown-menu rounded-0 m-0">
                                             <span class="text-muted text-center ml-3">Add To WishList</span>
 
                                             @foreach (Auth::user()->wishlists as $wishlist)
-                                                <button class="dropdown-item btn btn-block" onclick="addToWishlist({{$wishlist->id}},{{$product->id}})">{{$wishlist->name}}</button>
+                                                <button class="dropdown-item btn btn-block"
+                                                    onclick="addToWishlist({{ $wishlist->id }},{{ $product->id }})">{{ $wishlist->name }}</button>
                                             @endforeach
 
                                         </div>
                                     </div>
-                                    @endauth
-                                    @guest
-                                    <a href="{{route('user-login.create')}}" class="btn btn-sm text-dark p-0"> <span class="d-none d-sm-block"><i class='bx bx-list-plus text-primary mr-1' style="font-size: 25px" ></i>More Options</span></a>
-                                    @endguest
-                                </div>
+                                @endauth
+                                @guest
+                                    <a href="{{ route('user-login.create') }}" class="btn btn-sm text-dark p-0"> <span
+                                            class="d-none d-sm-block"><i class='bx bx-list-plus text-primary mr-1'
+                                                style="font-size: 25px"></i>More Options</span></a>
+                                @endguest
+                            </div>
                         </div>
                     </div>
                 @endforeach
@@ -552,8 +557,6 @@
             }
         })
     }
-
-
 </script>
 
 @auth

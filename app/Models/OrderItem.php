@@ -18,6 +18,10 @@ class OrderItem extends Model
         'quantity'
     ];
 
+    public function refund(){
+        return $this->morphMany(Refund::class,'refundable');
+    }
+
     public function product(){
         return $this->belongsTo(Product::class);
     }

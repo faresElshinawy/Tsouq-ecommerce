@@ -26,8 +26,8 @@
                         class="
                     @if ($order->status == 'rejected') bg-label-danger me-1 p-1 rounded @endif
                     @if ($order->status == 'delivered') bg-label-success me-1 p-1 rounded @endif
-                    @if ($order->status == 'pending') bg-label-primary me-1 p-1 rounded @endif
-                    @if ($order->status == 'in_progress') bg-label-info me-1 p-1 rounded @endif
+                    @if ($order->status == 'in_progress') bg-label-primary me-1 p-1 rounded @endif
+                    @if ($order->status == 'shipped') bg-label-dark me-1 p-1 rounded @endif
                 ">{{ str_replace('_', ' ', $order->status) }}</span>
                 </td>
                 <td>{{ $order->total_price }}</td>

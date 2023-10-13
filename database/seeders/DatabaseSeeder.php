@@ -52,6 +52,7 @@ class DatabaseSeeder extends Seeder
             SubscriberSeeder::class,
             ChatSeeder::class,
             ChatMessageSeeder::class,
+            RefundSeeder::class,
             // CreditCardSeeder::class,//dont seed credit card table because i disabled it from the website so it will not show up
             // CitySeeder::class,//dont seed city table because i disabled it from the website so it will not show up
         ]);

@@ -36,7 +36,7 @@ here is where you can get access to all end user routes
 */
 
 
-Route::group(['middleware' => ['prevent-back-history' , 'userActivity']],function(){
+Route::group(['middleware' => ['prevent-back-history' , 'userActivity','throttle:50,1']],function(){
 
 
     Route::group([
@@ -91,7 +91,7 @@ Route::group(['middleware' => ['prevent-back-history' , 'userActivity']],functio
         'controller'=>ShopController::class
     ],function (){
         Route::get('/','index')->name('show');
-        // Route::post('/filter','filter')->name('filter');
+        // Route::post('/filter','filterAndSearch')->name('filter');
         Route::get('/search','index')->name('search');
         Route::get('/category/{category}','categoryProduct')->name('category');
         Route::get('/brand/{brand}','brandProduct')->name('brand');

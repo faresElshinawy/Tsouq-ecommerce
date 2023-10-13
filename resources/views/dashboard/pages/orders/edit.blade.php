@@ -18,11 +18,12 @@
                                 {{ $order->user->email }}</a></p>
                         @if ($order->address ?? false)
                             <p>User Phone : <a class="text-primary "
-                                    href="{{ route('users.edit', ['user' => $order->user->id]) }}"> {{ $order->address->phone }}</a>
+                                    href="{{ route('users.edit', ['user' => $order->user->id]) }}">
+                                    {{ $order->address->phone }}</a>
                             </p>
                             <p>Order Address To : <a class="text-primary "
                                     href="{{ route('users.addresses.edit', ['address' => $order->address_id]) }}">
-                                    {{ $order->address->country->name . ' , ' . ( $order->address->city_spare ) . ' , ' . $order->address->street . ' , ' . $order->address->building_number }}</a>
+                                    {{ $order->address->country->name . ' , ' . $order->address->city_spare . ' , ' . $order->address->street . ' , ' . $order->address->building_number }}</a>
                             </p>
                         @endif
                     </div>
@@ -32,8 +33,7 @@
                                 class="
                             @if ($order->status == 'rejected') bg-label-danger me-1 p-1 rounded @endif
                             @if ($order->status == 'delivered') bg-label-success me-1 p-1 rounded @endif
-                            @if ($order->status == 'pending') bg-label-primary me-1 p-1 rounded @endif
-                            @if ($order->status == 'in_progress') bg-label-info me-1 p-1 rounded @endif
+                            @if ($order->status == 'in_progress') bg-label-primary me-1 p-1 rounded @endif
                             @if ($order->status == 'shipped') bg-label-dark me-1 p-1 rounded @endif
                         ">{{ str_replace('_', ' ', $order->status) }}
                             </span></p>
@@ -55,7 +55,8 @@
                                 id="basic-default-status">
                                 <option selected disabled>select order type</option>
                                 @foreach ($status as $status_opt)
-                                    <option value="{{ $status_opt }}" @selected($status_opt == old('status') || $status_opt == $order->status)>{{ str_replace('_',' ',$status_opt) }}
+                                    <option value="{{ $status_opt }}" @selected($status_opt == old('status') || $status_opt == $order->status)>
+                                        {{ str_replace('_', ' ', $status_opt) }}
                                     </option>
                                 @endforeach
                             </select>
@@ -63,11 +64,12 @@
                     </div>
 
                     <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label" for="basic-default-status">Send Customer Notify Message</label>
+                        <label class="col-sm-2 col-form-label" for="basic-default-status">Send Customer Notify
+                            Message</label>
                         <div class="col-sm-10">
                             <div class="form-check">
-                                <input class="form-check-input @error('status') border-danger @enderror" type="checkbox" value="true" id="user-notify-message"
-                                    name="sms_approved" />
+                                <input class="form-check-input @error('status') border-danger @enderror" type="checkbox"
+                                    value="true" id="user-notify-message" name="sms_approved" />
                                 <label class="form-check-label" for="user-notify-message"> Approved </label>
                             </div>
                         </div>
@@ -96,6 +98,9 @@
                                 <th>Price After Discount</th>
                                 <th>Discount</th>
                                 <th>Discount Value</th>
+                                {{-- @can('set refund') --}}
+                                <th>Actions</th>
+                                {{-- @endcan --}}
                             </tr>
                         </thead>
                         <tbody class="table-border-bottom-0">
@@ -120,12 +125,26 @@
                                         @if (!$item->discount) label bg-label-danger rounded p-1 @endif
 
                                         ">
-                                        {{ ( $item->discount ?? 'no discount' ) . ( $item->discount ? '%' : null )}}
+                                            {{ ($item->discount ?? 'no discount') . ($item->discount ? '%' : null) }}
                                         </span>
                                     </td>
                                     <td>
                                         {{ $item->discount_value ?? 'no discount' }}
                                     </td>
+                                    {{-- @can('set refund') --}}
+                                    <td>
+                                        <div class="dropdown">
+                                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                                data-bs-toggle="dropdown">
+                                                <i class="bx bx-dots-vertical-rounded"></i>
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" href=""><i class='bx bx-refresh'></i> Set
+                                                    Refund</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    {{-- @endcan --}}
                                 </tr>
                             @endforeach
                         </tbody>

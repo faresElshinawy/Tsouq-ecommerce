@@ -18,6 +18,10 @@ class Order extends Model
         'total_price'
     ];
 
+    public function refunds(){
+        return $this->morphMany(Refund::class,'refundable');
+    }
+
     public function user(){
         return $this->belongsTo(User::class);
     }
@@ -34,5 +38,5 @@ class Order extends Model
         return $this->hasMany(OrderItem::class);
     }
 
-    
+
 }

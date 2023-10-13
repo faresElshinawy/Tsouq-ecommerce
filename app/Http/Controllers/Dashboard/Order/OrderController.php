@@ -32,7 +32,7 @@ public function __construct()
 
     public function index(){
         return view('dashboard.pages.orders.index',[
-            'orders'=>Order::with('user','products:price,id')->orderBy('created_at','desc')->paginate()
+            'orders'=>Order::where('status','!=','pending')->with('user','products:price,id')->orderBy('created_at','desc')->paginate()
         ]);
     }
 
@@ -42,7 +42,7 @@ public function __construct()
             $status = $request->get('status');
             $date_from = $request->get('date_from');
             $date_to = $request->get('date_to');
-            $orders = Order::query()->with('user');
+            $orders = Order::query()->where('status','!=','pending')->with('user');
 
             if($query != null){
                 $orders->whereHas('user',function ($result) use ($query) {
@@ -67,15 +67,16 @@ public function __construct()
 
     public function userOrder(User $user){
         return view('dashboard.pages.users.orders.index',[
-            'orders'=>Order::where('user_id',$user->id)->orderBy('created_at','desc')->paginate()
+            'orders'=>Order::where('status','!=','pending')->where('user_id',$user->id)->orderBy('created_at','desc')->paginate(),
+            'user'=>$user
         ]);
     }
 
     public function userOrderSearch(Request $request){
         if($request->ajax()){
-            $query = trim($request->get('query'));
-            $user_id = trim($request->get('user_id'));
-            $orders = Order::query()->where('user_id',$user_id)->Where('order_serial_code','like',"%{$query}")->paginate();
+            $query = $request->get('query');
+            $user_id = $request->get('user_id');
+            $orders = Order::where('status','!=','pending')->where('user_id',$user_id)->Where('order_serial_code','like',"%{$query}%")->paginate();
             return view('dashboard.pages.users.orders.order-search',[
                 'orders'=>$orders
             ]);
@@ -89,7 +90,7 @@ public function __construct()
         ]);
         return view('dashboard.pages.orders.edit',[
             'order'=>$order,
-            'status'=>['pending','in_progress','delivered','shipped','rejected']
+            'status'=>['in_progress','shipped','delivered','rejected']
         ]);
     }
 
@@ -122,4 +123,5 @@ public function __construct()
         $order->delete();
         return redirect()->back()->with('success','order Deleted Successfully');
     }
+
 }

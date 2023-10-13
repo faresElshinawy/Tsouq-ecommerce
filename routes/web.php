@@ -11,6 +11,7 @@ use App\Http\Controllers\Dashboard\User\UserController;
 use App\Http\Controllers\Dashboard\Brand\BrandController;
 use App\Http\Controllers\Dashboard\Color\ColorController;
 use App\Http\Controllers\Dashboard\Order\OrderController;
+use App\Http\Controllers\Dashboard\Refund\RefundController;
 use App\Http\Controllers\Dashboard\Search\SearchController;
 use App\Http\Controllers\Dashboard\Address\AddressController;
 use App\Http\Controllers\Dashboard\Country\CountryController;
@@ -19,7 +20,9 @@ use App\Http\Controllers\Dashboard\Setting\SettingController;
 use App\Http\Controllers\Dashboard\Voucher\VoucherController;
 use App\Http\Controllers\Dashboard\Category\CategoryController;
 use App\Http\Controllers\Dashboard\Feedback\FeedbackController;
+use App\Http\Controllers\Dashboard\Refund\ItemRefundController;
 use App\Http\Controllers\Dashboard\WishList\WishListController;
+use App\Http\Controllers\Dashboard\Refund\OrderRefundController;
 use App\Http\Controllers\Dashboard\WishList\WishListJController;
 use App\Http\Controllers\Dashboard\OrderItem\OrderItemController;
 use App\Http\Controllers\Dashboard\CreditCard\CreditCardController;
@@ -42,7 +45,7 @@ use App\Http\Controllers\Dashboard\WishListItem\WishListItemController;
 */
 
 
-Route::group(['middleware' => ['prevent-back-history' , 'userActivity']],function(){
+Route::group(['middleware' => ['prevent-back-history' , 'userActivity','throttle:50,1']],function(){
 
 
 
@@ -387,6 +390,27 @@ Route::group(['middleware' => ['prevent-back-history' , 'userActivity']],functio
                 Route::post('/store','store')->name('store');
                 Route::post('/change-messages-status','changeMessagesStatus')->name('status-change');
             });
+        });
+
+
+        Route::group([
+            'prefix'=>'orders-refunds',
+            'as'=>'orders-refunds.',
+            'controller'=>OrderRefundController::class
+        ],function (){
+            Route::get('/orders','index')->name('all');
+            Route::get('/{order}','create')->name('create');
+            Route::post('/{order}/store','store')->name('store');
+        });
+
+        Route::group([
+            'prefix'=>'items-refunds',
+            'as'=>'items-refunds.',
+            'controller'=>ItemRefundController::class
+        ],function (){
+            Route::get('/items','index')->name('all');
+            Route::get('/{orderItem}/create','create')->name('create');
+            Route::get('/{orderItem}/store','store')->name('store');
         });
 
     });

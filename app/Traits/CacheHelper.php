@@ -18,7 +18,7 @@ trait CacheHelper {
         public function cacheQuery(string $table,int $minutes = 60,mixed $with = null,array $arrayOfConditions = [],string $collectionType = 'normal'){
             $this->getModel($table);
 
-            $cacheName = $collectionType == 'count' ? $table."_count" : $table."_cached";
+            $cacheName = $collectionType === 'count' ? $table."_count" : $table."_cached";
 
             if(Cache::has($cacheName)){
                 return Cache::get($cacheName);

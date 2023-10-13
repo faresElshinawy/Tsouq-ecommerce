@@ -28,15 +28,14 @@ class ShopController extends Controller
         // dd($this->getRandomImageUrlFromGoogle('phone'));
 
         if ($request->ajax()) {
-            return $this->filter($request);
+            return $this->filterAndSearch($request);
         }
 
-        $products = Product::query();
+        $products = $this->cacheQuery('products',60,null,[],'paginated');
         if ($request->get('query')) {
             $search = $request->get('query');
-            $products = Product::search($search);
+            $products = Product::search($search)->paginate();
         }
-        $products = $products->paginate();
         $sizes = $this->cacheQuery('sizes', 60, 'products:id');
         $colors = $this->cacheQuery('colors', 60, 'products:id');
         $categories = $this->cacheQuery('categories', 60, 'products:id,category_id');
@@ -54,14 +53,14 @@ class ShopController extends Controller
     }
 
 
-    public function filter(Request $request)
+    public function filterAndSearch(Request $request)
     {
         $brands = $request->get('brands');
         $categories = $request->get('categories');
         $colors = $request->get('colors');
         $sizes = $request->get('sizes');
         $prices = explode('-', $request->prices);
-        $query = trim($request->get('query'));
+        $query = $request->get('query');
         $filter = $request->get('filter');
         $products = Product::query();
         if ($brands || $sizes || $colors || $categories || $prices) {

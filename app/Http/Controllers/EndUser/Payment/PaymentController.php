@@ -111,6 +111,7 @@ class PaymentController extends Controller
 
             $order->status = 'in_progress';
             $order->total_price = $response['AMT'] - Setting::get('tax');
+            $order->transactionId =  $response['TOKEN'];
             $order->save();
             foreach ($order->items as $item) {
                 $itemPrice = round($item->product->price - (($item->product->discount / 100) * $item->product->price));

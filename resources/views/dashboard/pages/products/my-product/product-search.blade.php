@@ -9,6 +9,7 @@
                 <th>Price</th>
                 <th>Count</th>
                 <th>Discount</th>
+                <th>Status</th>
                 <th>Image</th>
                 <th>Solded</th>
                 <th>Refunds</th>
@@ -27,6 +28,7 @@
                     <td>{{ $product->price }}</td>
                     <td>{{ $product->count }}</td>
                     <td>{{ $product->discount }}</td>
+                    <td>{{ $product->status }}</td>
                     <td>
                         @if (File::exists(public_path('uploads/products/' . $product->image)) || filter_var($product->image,FILTER_VALIDATE_URL))
                             <img style="width:200px;hight:200px"

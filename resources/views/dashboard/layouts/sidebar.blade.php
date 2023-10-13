@@ -153,18 +153,19 @@
             <ul class="menu-inner py-1">
                 <!-- Dashboard -->
 
-                    <li class="menu-item  {{ Route::currentRouteNamed('statistics.all') ? 'active' : null }}">
-                        <a href="{{ route('statistics.all') }}" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                            <div data-i18n="Analytics">Dashboard</div>
-                        </a>
-                    </li>
+                <li class="menu-item  {{ Route::currentRouteNamed('statistics.all') ? 'active' : null }}">
+                    <a href="{{ route('statistics.all') }}" class="menu-link">
+                        <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                        <div data-i18n="Analytics">Dashboard</div>
+                    </a>
+                </li>
 
                 @can('user all')
                     <li class="menu-header small text-uppercase">
                         <span class="menu-header-text">Users</span>
                     </li>
-                    <li class="menu-item  {{ Route::currentRouteNamed('users.all') || Route::currentRouteNamed('subscribers.all') || Route::currentRouteNamed('roles.all') ? 'active open ' : null }}">
+                    <li
+                        class="menu-item  {{ Route::currentRouteNamed('users.all') || Route::currentRouteNamed('subscribers.all') || Route::currentRouteNamed('roles.all') ? 'active open ' : null }}">
                         <a href="javascript:void(0);" class="menu-link menu-toggle">
                             <box-icon type='solid' name='user'></box-icon>
                             <div data-i18n="Account Settings">Users</div>
@@ -237,7 +238,8 @@
                         <span class="menu-header-text">Products</span>
                     </li>
 
-                    <li class="menu-item {{ Route::currentRouteNamed('products.all') || Route::currentRouteNamed('sizes.all')  || Route::currentRouteNamed('colors.all') || Route::currentRouteNamed('products.myProducts') ? 'active open' : null }}">
+                    <li
+                        class="menu-item {{ Route::currentRouteNamed('products.all') || Route::currentRouteNamed('sizes.all') || Route::currentRouteNamed('colors.all') || Route::currentRouteNamed('products.myProducts') ? 'active open' : null }}">
                         <a href="javascript:void(0);" class="menu-link menu-toggle">
                             <box-icon type='solid' name='user'></box-icon>
                             <div data-i18n="Account Settings">Products</div>
@@ -319,6 +321,8 @@
                 @endcan
 
 
+
+
                 @can('order all')
                     <li class="menu-header small text-uppercase">
                         <span class="menu-header-text">Orders</span>
@@ -336,6 +340,25 @@
                             </li>
                         </ul>
                     </li>
+
+                    <li class="menu-item ">
+                        <a href="javascript:void(0);" class="menu-link menu-toggle">
+                            <box-icon type='solid' name='user'></box-icon>
+                            <div data-i18n="Account Settings">Refunds</div>
+                        </a>
+                        <ul class="menu-sub">
+                            <li class="menu-item ">
+                                <a href="{{ route('orders.all') }}" class="menu-link">
+                                    <div data-i18n="Notifications">Items Refunds</div>
+                                </a>
+                            </li>
+                            <li class="menu-item ">
+                                <a href="{{ route('orders-refunds.all') }}" class="menu-link">
+                                    <div data-i18n="Notifications">Orders Refunds</div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                 @endcan
 
 
@@ -343,7 +366,8 @@
                     <li class="menu-header small text-uppercase">
                         <span class="menu-header-text">Customers Services</span>
                     </li>
-                    <li class="menu-item {{ Route::currentRouteNamed('feedbacks.all') || Route::currentRouteNamed('chats.all') ? 'active open' : null }}">
+                    <li
+                        class="menu-item {{ Route::currentRouteNamed('feedbacks.all') || Route::currentRouteNamed('chats.all') ? 'active open' : null }}">
                         <a href="javascript:void(0);" class="menu-link menu-toggle">
                             <box-icon type='solid' name='user'></box-icon>
                             <div data-i18n="Account Settings">Customers Services</div>
@@ -358,11 +382,11 @@
                             @endcan
 
                             {{-- @can('feedbacks all') --}}
-                                <li class="menu-item {{ Route::currentRouteNamed('chats.all') ? 'active' : null }}">
-                                    <a href="{{ route('chats.all') }}" class="menu-link">
-                                        <div data-i18n="Notifications">Chats</div>
-                                    </a>
-                                </li>
+                            <li class="menu-item {{ Route::currentRouteNamed('chats.all') ? 'active' : null }}">
+                                <a href="{{ route('chats.all') }}" class="menu-link">
+                                    <div data-i18n="Notifications">Chats</div>
+                                </a>
+                            </li>
                             {{-- @endcan --}}
                         </ul>
                     </li>

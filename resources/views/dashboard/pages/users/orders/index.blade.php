@@ -14,7 +14,7 @@
                     </div>
                     {{-- <a class="btn btn-primary text-white" href="{{ route('orders.create') }}">Add New order</a> --}}
                 </div>
-                <div class="table text-nowrap">
+                <div class="table table-responsive text-nowrap">
                     <div id="search-result">
                         <table class="table table-hover">
                             <thead>
@@ -44,8 +44,8 @@
                                                 class="
                                             @if ($order->status == 'rejected') bg-label-danger me-1 p-1 rounded @endif
                                             @if ($order->status == 'delivered') bg-label-success me-1 p-1 rounded @endif
-                                            @if ($order->status == 'pending') bg-label-primary me-1 p-1 rounded @endif
-                                            @if ($order->status == 'in_progress') bg-label-info me-1 p-1 rounded @endif
+                                            @if ($order->status == 'in_progress') bg-label-primary me-1 p-1 rounded @endif
+                                            @if ($order->status == 'shipped') bg-label-dark me-1 p-1 rounded @endif
                                         ">{{ str_replace('_', ' ', $order->status) }}</span>
                                         </td>
                                         <td>{{ $order->products->sum('price') }}</td>
@@ -95,11 +95,12 @@
                 e.preventDefault();
                 query = this.value;
                 $.ajax({
-                    url: "{{ route('orders.search') }}",
+                    url: "{{ route('users.orders.order-search') }}",
                     type: 'POST',
                     data: {
                         "query": query,
-                        "_token": "{{ csrf_token() }}"
+                        "_token": "{{ csrf_token() }}",
+                        'user_id':"{{$user->id}}"
                     },
                     datatype: 'html',
                     cache: false,

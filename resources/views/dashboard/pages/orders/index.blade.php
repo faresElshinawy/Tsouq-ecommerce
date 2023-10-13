@@ -20,7 +20,6 @@
                                 class="form-control  @error('status') border-danger @enderror">
                                 <option selected disabled>Select Order Status</option>
                                 <option value=" ">all</option>
-                                <option value="pending" @selected(old('status') == 'pending')>pending</option>
                                 <option value="in_progress" @selected(old('status') == 'in_progress')>in progress</option>
                                 <option value="delivered" @selected(old('status') == 'delivered')>delivered</option>
                                 <option value="shipped" @selected(old('status') == 'shipped')>shipped</option>
@@ -37,7 +36,7 @@
                                 <input type="date" name="date-from" class="form-control" id="date_from">
                             </div>
                             <div class="col-6 m-1">
-                                <label class="col-sm-2 col-form-label" for="basic-default-date" >To :</label>
+                                <label class="col-sm-2 col-form-label" for="basic-default-date">To :</label>
                                 <input type="date" name="date-to" class="form-control" id="date_to">
                             </div>
                         </div>
@@ -66,7 +65,7 @@
                                     <th>Serial Code</th>
                                     <th>User</th>
                                     <th>Status</th>
-                                    <th>total    Price</th>
+                                    <th>total Price</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -85,11 +84,12 @@
                                                 class="
                                             @if ($order->status == 'rejected') bg-label-danger me-1 p-1 rounded @endif
                                             @if ($order->status == 'delivered') bg-label-success me-1 p-1 rounded @endif
-                                            @if ($order->status == 'pending') bg-label-primary me-1 p-1 rounded @endif
-                                            @if ($order->status == 'in_progress') bg-label-info me-1 p-1 rounded @endif
+                                            @if ($order->status == 'in_progress') bg-label-primary me-1 p-1 rounded @endif
+                                            @if ($order->status == 'shipped') bg-label-dark me-1 p-1 rounded @endif
                                         ">{{ str_replace('_', ' ', $order->status) }}</span>
                                         </td>
-                                        <td>{{ $order->status != 'pending' ? ($order->total_price ? $order->total_price : 'there is a problem cant get the final price') :  'not submited yet' }}</td>
+                                        <td>{{ $order->status != 'pending' ? ($order->total_price ? $order->total_price : 'there is a problem cant get the final price') : 'not submited yet' }}
+                                        </td>
                                         <td>
                                             <div class="dropdown">
                                                 <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
@@ -99,13 +99,21 @@
                                                 <div class="dropdown-menu">
 
                                                     @can('order edit')
-                                                    @if ($order->status != 'pending')
-                                                    <a class="dropdown-item" href="{{route('generate-pdf.create',['order'=>$order->id])}}"  target="_blank"><i class='bx bxs-file-pdf'></i> Export PDF</a>
+                                                        @if ($order->status != 'pending')
+                                                            <a class="dropdown-item"
+                                                                href="{{ route('generate-pdf.create', ['order' => $order->id]) }}"
+                                                                target="_blank"><i class='bx bxs-file-pdf'></i> Export PDF</a>
+                                                            <a class="dropdown-item"
+                                                                href="{{ route('orders.edit', ['order' => $order->id]) }}"><i
+                                                                    class="bx bx-edit-alt me-1"></i> Edit & Details</a>
+                                                        @endif
+                                                    @endcan
+
+                                                    {{-- @can('set refund') --}}
                                                         <a class="dropdown-item"
-                                                            href="{{ route('orders.edit', ['order' => $order->id]) }}"><i
-                                                                class="bx bx-edit-alt me-1"></i> Edit & Details</a>
-                                                    @endif
-                                                @endcan
+                                                            href="{{route('orders-refunds.create',['order'=>$order->id])}}"
+                                                            ><i class='bx bx-refresh'></i> Set Refunds</a>
+                                                    {{-- @endcan --}}
 
                                                     @can('order delete')
                                                         <form action="{{ route('orders.destroy', ['order' => $order->id]) }}"
@@ -136,9 +144,6 @@
 
 @section('js')
     <script>
-
-
-
         $(document).ready(function() {
 
 
@@ -157,9 +162,9 @@
                     data: {
                         "query": query,
                         "_token": "{{ csrf_token() }}",
-                        'date_from':date_from,
-                        'date_to':date_to,
-                        'status':status
+                        'date_from': date_from,
+                        'date_to': date_to,
+                        'status': status
                     },
                     datatype: 'html',
                     cache: false,
@@ -189,9 +194,9 @@
                     data: {
                         "query": query,
                         "_token": "{{ csrf_token() }}",
-                        'date_from':date_from,
-                        'date_to':date_to,
-                        'status':status
+                        'date_from': date_from,
+                        'date_to': date_to,
+                        'status': status
                     },
                     datatype: 'html',
                     cache: false,
@@ -217,9 +222,9 @@
                     data: {
                         "query": query,
                         "_token": "{{ csrf_token() }}",
-                        'date_from':date_from,
-                        'date_to':date_to,
-                        'status':status
+                        'date_from': date_from,
+                        'date_to': date_to,
+                        'status': status
                     },
                     cache: false,
                     success: function(data) {
@@ -230,6 +235,5 @@
             })
 
         });
-
     </script>
 @endsection
