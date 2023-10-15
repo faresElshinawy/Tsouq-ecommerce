@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('refunds', function (Blueprint $table) {
             $table->id();
+            $table->string('transaction_id');
             $table->integer('refundable_id')->unsigned();
             $table->string('refundable_type');
             $table->integer('quantity')->nullable();

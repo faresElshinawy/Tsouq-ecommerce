@@ -11,8 +11,10 @@ use Illuminate\Auth\Middleware\Authenticate as Middleware;
 class dashboardAuth extends Middleware
 {
 
-    protected function redirectTo(Request $request): ?string
+    protected function redirectTo(Request $request)
     {
-        return $request->expectsJson() ? null : route('login.create');
+        if(!Auth::check()){
+            route('login.create');
+        }
     }
 }

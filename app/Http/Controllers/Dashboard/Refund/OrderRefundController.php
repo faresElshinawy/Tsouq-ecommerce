@@ -16,19 +16,20 @@ class OrderRefundController extends Controller
 
     public function __construct()
     {
-        $this->middleware('refund all')->only('index');
-        $this->middleware('set refund')->only(['create','store']);
+        $this->middleware('permission:refund all')->only('index');
+        $this->middleware('permission:set refund')->only(['create','store']);
     }
 
     public function index(Request $request)
     {
-        $refunds = Refund::where('refundable_type', 'App\Models\Order');
+        $refunds = Refund::where('refundable_type', 'App\Models\Order')->orderBy('created_at','desc');
 
         if ($request->ajax()) {
             $query = $request->get('query');
             $refunds->whereHasMorph('refundable', Order::class, function ($q) use ($query) {
-                $q->where('order_serial_code', 'like', "%{$query}%");
+                $q->where('order_serial_code', 'like',"%{$query}%");
             });
+            $refunds->orWhere('transaction_id','like',"%{$query}%");
             $refunds = $refunds->paginate();
             return view('dashboard.pages.refunds.orders-refunds.search', [
                 'refunds' => $refunds
@@ -51,7 +52,7 @@ class OrderRefundController extends Controller
     public function store(RefundStoreRequest $request, Order $order)
     {
 
-        $refundAmount = $request->refund_amount;
+        $refundAmount = $request->total_amount;
         $refundReason = $request->refund_reason;
 
         if ($order->status == 'refunded') {
@@ -60,7 +61,8 @@ class OrderRefundController extends Controller
 
         $status = $this->processRefund($order);
         if ($status === 'COMPLETED') {
-            Refund::created([
+            Refund::create([
+                'transaction_id'=>$order->transaction_id,
                 'refundable_id'=>$order->id,
                 'refundable_type'=>'App\Models\Order',
                 'total_amount'=>$refundAmount,

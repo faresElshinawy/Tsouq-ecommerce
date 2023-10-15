@@ -327,7 +327,7 @@
                     <li class="menu-header small text-uppercase">
                         <span class="menu-header-text">Orders</span>
                     </li>
-                    <li class="menu-item {{ Route::currentRouteNamed('orders.all') ? 'active open' : null }}">
+                    <li class="menu-item {{ Route::currentRouteNamed('orders.all') || Route::currentRouteNamed('orders-refunds.all') ? 'active open' : null }}">
                         <a href="javascript:void(0);" class="menu-link menu-toggle">
                             <box-icon type='solid' name='user'></box-icon>
                             <div data-i18n="Account Settings">Orders</div>

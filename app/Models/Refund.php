@@ -14,7 +14,8 @@ class Refund extends Model
         'refundable_type',
         'quantity',
         'total_amount',
-        'refund_reason'
+        'refund_reason',
+        'transaction_id'
     ];
 
 

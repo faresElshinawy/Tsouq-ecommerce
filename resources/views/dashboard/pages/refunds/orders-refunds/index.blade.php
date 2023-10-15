@@ -25,6 +25,7 @@
                                     <th>Order Number</th>
                                     <th>Refund Reason</th>
                                     <th>Total Amount</th>
+                                    <th>Transaction ID</th>
                                     {{-- <th>Actions</th> --}}
                                 </tr>
                             </thead>
@@ -38,6 +39,7 @@
                                         </td>
                                         <td>{{ $refund->refund_reason}}</td>
                                         <td>${{ $refund->total_amount}}</td>
+                                        <td>{{ $refund->transaction_id}}</td>
 
                                     </tr>
                                 @endforeach

@@ -17,9 +17,10 @@ class RefundFactory extends Factory
     public function definition(): array
     {
         return [
+            'transaction_id'=>'22736746NF804280K',
             'refundable_id'=>fake()->numberBetween(1,5),
             'refundable_type'=>'App\Models\Order',
-            'total_amount'=>fake()->numberBetween(100,10000),
+            'total_amount'=>fake()->numberBetween(100,1000),
             'refund_reason'=>fake()->randomElement([
                 'broken items',
                 'items is used',

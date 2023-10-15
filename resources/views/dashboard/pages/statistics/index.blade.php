@@ -33,7 +33,7 @@
                         <div class="card-body">
                             <div class="card-title d-flex align-items-start justify-content-between">
                                 <div class="avatar flex-shrink-0">
-                                    <i class='bx bx-user label bg-label-success p-1 fs-3 rounded'></i>
+                                    <i class='bx bx-user label bg-label-danger p-1 fs-3 rounded'></i>
                                 </div>
                                 <div class="dropdown">
                                     <button class="btn p-0" type="button" id="cardOpt3" data-bs-toggle="dropdown"
@@ -45,9 +45,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <span class="fw-semibold d-block mb-1">Online Users</span>
-                            <h3 class="card-title mb-2">{{ $countOnlineUsers }}</h3>
-                            <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> {{ round( ($countOnlineUsers / $countUsers) * 100 ) }} </small>
+                            <span class="fw-semibold d-block mb-1">Total Refunds</span>
+                            <h3 class="card-title mb-2">${{ number_format($refundsTotal) }}</h3>
+                            <small class="text-danger fw-semibold">100% </small>
                         </div>
                     </div>
                 </div>
@@ -70,7 +70,7 @@
                                 </div>
                             </div>
                             <span >Sales</span>
-                            <h3 class="card-title text-nowrap mb-1 my-2">${{ number_format($orderitems->sum('product.price')) }}</h3>
+                            <h3 class="card-title text-nowrap mb-1 my-2">${{ number_format($orderitems->sum('product.price') - $refundsTotal) }}</h3>
                             <small class="text-info fw-semibold">  {{ round(( $countDeliveredOrders / $countOrders) * 100) }} % </small>
                         </div>
                     </div>
@@ -88,7 +88,7 @@
                         <div class="card-body">
                             <div class="card-title d-flex align-items-start justify-content-between">
                                 <div class="avatar flex-shrink-0">
-                                    <i class='bx bx-message-alt label bg-label-danger p-1 fs-3 rounded' ></i>
+                                    <i class='bx bx-message-alt label bg-label-success p-1 fs-3 rounded' ></i>
                                 </div>
                                 <div class="dropdown">
                                     <button class="btn p-0" type="button" id="cardOpt4" data-bs-toggle="dropdown"
@@ -102,7 +102,7 @@
                             </div>
                             <span class="d-block mb-1">Feedbacks</span>
                             <h3 class="card-title text-nowrap mb-2">{{ $feedbacks->count() }}</h3>
-                            <small class="text-danger fw-semibold">  100 % </small>
+                            <small class="text-success fw-semibold">  100 % </small>
                         </div>
                     </div>
                 </div>

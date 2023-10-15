@@ -51,7 +51,7 @@ class PaymentController extends Controller
 
         Session::put('order_info',[
             'order_id'=>$order->id,
-            'total'=>$order->total
+            'total'=>$total
         ]);
 
 
