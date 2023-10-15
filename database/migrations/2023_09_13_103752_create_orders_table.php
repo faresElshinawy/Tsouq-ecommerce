@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('order_serial_code');
             $table->foreignId('user_id')->references('id')->on('users');
             $table->foreignId('address_id')->nullable()->references('id')->on('addresses');
-            $table->enum('status',['pending','in_progress','delivered','shipped','refunded','rejected']);
+            $table->enum('status',['pending','in_progress','delivered','shipped','refunded']);
             $table->integer('total_price')->nullable();
             $table->string('transactionId')->nullable();
             $table->softDeletes();

@@ -23,7 +23,7 @@
                                 <option value="in_progress" @selected(old('status') == 'in_progress')>in progress</option>
                                 <option value="delivered" @selected(old('status') == 'delivered')>delivered</option>
                                 <option value="shipped" @selected(old('status') == 'shipped')>shipped</option>
-                                <option value="rejected" @selected(old('status') == 'rejected')>rejected</option>
+                                <option value="rejected" @selected(old('status') == 'refunded')>refunded</option>
                             </select>
                         </div>
                     </div>
@@ -85,7 +85,7 @@
                                         </td>
                                         <td> <span
                                                 class="
-                                            @if ($order->status == 'rejected') bg-label-danger me-1 p-1 rounded @endif
+                                            @if ($order->status == 'refunded') bg-label-danger me-1 p-1 rounded @endif
                                             @if ($order->status == 'delivered') bg-label-success me-1 p-1 rounded @endif
                                             @if ($order->status == 'in_progress') bg-label-primary me-1 p-1 rounded @endif
                                             @if ($order->status == 'shipped') bg-label-dark me-1 p-1 rounded @endif

@@ -35,12 +35,9 @@ trait CartExtra {
             return $order;
         }
         $order = Order::create([
-            'order_serial_code'=>'test',
+            'order_serial_code'=>'INV-' . date('YmdHis') . $user_id,
             'user_id'=>$user_id
         ]);
-        $serial_code = 'ord-ser-' . $order->id ;
-        $order->order_serial_code = $serial_code;
-        $order->save();
 
         if($order){
             return $order;

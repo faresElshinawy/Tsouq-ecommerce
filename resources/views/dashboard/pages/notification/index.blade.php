@@ -38,7 +38,8 @@
                                                     <div class="notification-content ">
                                                         {{ $notification->data['notify_type'] . ' ' . $notification->data['product_name'] . ' ' . $notification->data['action'] }}
                                                     </div>
-                                                    <span class="text-muted">{{ \Carbon\Carbon::parse($notification->data['created_at'])->diffForHumans() }}</span>
+                                                    <span
+                                                        class="text-muted">{{ \Carbon\Carbon::parse($notification->data['created_at'])->diffForHumans() }}</span>
                                                 </div>
                                             </a>
                                             <a class="btn btn-muted mt-3 "
@@ -65,7 +66,8 @@
                                                     <div class="notification-content ">
                                                         {{ $notification->data['notify_type'] . ' ' . $notification->data['order_code'] . ' ' . $notification->data['action'] }}
                                                     </div>
-                                                    <span class="text-muted">{{ \Carbon\Carbon::parse($notification->data['created_at'])->diffForHumans() }}</span>
+                                                    <span
+                                                        class="text-muted">{{ \Carbon\Carbon::parse($notification->data['created_at'])->diffForHumans() }}</span>
                                                 </div>
                                             </a>
                                             <a class="btn btn-muted mt-3 "
@@ -89,7 +91,8 @@
                                                     <div class="notification-avatar ">
                                                         {{ $notification->data['user_name'] }}
                                                     </div>
-                                                    <span class="text-muted">{{ \Carbon\Carbon::parse($notification->data['created_at'])->diffForHumans() }}</span>
+                                                    <span
+                                                        class="text-muted">{{ \Carbon\Carbon::parse($notification->data['created_at'])->diffForHumans() }}</span>
                                                 </div>
                                             </a>
                                             <a class="btn btn-muted mt-3 "
@@ -116,7 +119,8 @@
                                                             {{ $notification->data['message'] }}
                                                         </div>
                                                     </div>
-                                                    <span class="text-muted">{{ \Carbon\Carbon::parse($notification->data['created_at'])->diffForHumans() }}</span>
+                                                    <span
+                                                        class="text-muted">{{ \Carbon\Carbon::parse($notification->data['created_at'])->diffForHumans() }}</span>
                                                 </div>
                                             </a>
                                             <a class="btn btn-muted mt-3 "
@@ -135,7 +139,7 @@
                     </div>
                 </div>
                 <div class="d-flex justify-content-center" id="notifications-pagiantion">
-                    {{$notifications->links('pagination::bootstrap-4')}}
+                    {{ $notifications->links('pagination::bootstrap-4') }}
                 </div>
             </div>
         </div>
@@ -145,6 +149,10 @@
 
 @section('js')
     <script>
+        var pusher = new Pusher("{{ env('PUSHER_APP_Key') }}", {
+            cluster: 'ap2'
+        });
+
         $(document).ready(function() {
             $('#delete-all-btn').click(function(e) {
                 e.preventDefault();

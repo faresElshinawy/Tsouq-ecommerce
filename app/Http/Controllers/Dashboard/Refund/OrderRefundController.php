@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard\Refund;
 
+use App\Events\OrderRefundEvent;
 use App\Models\Order;
 use App\Models\Refund;
 use Illuminate\Http\Request;
@@ -54,21 +55,24 @@ class OrderRefundController extends Controller
 
         $refundAmount = $request->total_amount;
         $refundReason = $request->refund_reason;
-
         if ($order->status == 'refunded') {
             return redirect()->back()->with('error', 'Order Already Refunded');
         }
-
+        if($order->transactionId == null){
+            return redirect()->back()->with('error', 'Check PayPal History To Refund This Order');
+        }
         $status = $this->processRefund($order);
         if ($status === 'COMPLETED') {
             Refund::create([
-                'transaction_id'=>$order->transaction_id,
+                'transaction_id'=>$order->transactionId,
                 'refundable_id'=>$order->id,
                 'refundable_type'=>'App\Models\Order',
                 'total_amount'=>$refundAmount,
                 'refund_reason'=>$refundReason
             ]);
             $order->status = 'refunded';
+            $order->save();
+            event(new OrderRefundEvent($order));
             return redirect()->back()->with('success','Successful Refund process');
         }
         return redirect()->back()->with('error',$status);

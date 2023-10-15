@@ -82,7 +82,7 @@
                                 </td>
                                 <td> <span
                                         class="
-                                    @if ($order->status == 'rejected') bg-label-danger me-1 p-1 rounded @endif
+                                    @if ($order->status == 'refunded') bg-label-danger me-1 p-1 rounded @endif
                                     @if ($order->status == 'delivered') bg-label-success me-1 p-1 rounded @endif
                                     @if ($order->status == 'pending') bg-label-primary me-1 p-1 rounded @endif
                                     @if ($order->status == 'in_progress') bg-label-info me-1 p-1 rounded @endif

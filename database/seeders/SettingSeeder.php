@@ -25,7 +25,7 @@ class SettingSeeder extends Seeder
             'orders-button'=>'Orders',
             'contact-button'=>'Contact',
             'profile-button'=>'profile',
-            'slider-type'=>'static',
+            'slider-type'=>'dynamic',
             'slider-one-image'=>'test',
             'slider-one-url'=>'http://127.0.0.1:8000/shop',
             'slider-one-title'=>'Fashionable Dress',

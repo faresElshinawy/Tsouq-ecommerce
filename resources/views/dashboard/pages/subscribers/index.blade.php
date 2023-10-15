@@ -30,7 +30,7 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>
                                             <i class="fab fa-bootstrap fa-lg text-primary me-3"></i>
-                                            <strong>{{ $subscriber->name }}</strong>
+                                            <strong>{{ $subscriber->name ? $subscriber->name : 'No Name' }}</strong>
                                         </td>
                                         <td>{{ $subscriber->email }}</td>
                                         <td>

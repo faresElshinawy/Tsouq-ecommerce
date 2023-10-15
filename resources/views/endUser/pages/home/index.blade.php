@@ -199,7 +199,7 @@
                                         </a>
                                         <div class="dropdown-menu rounded-0 m-0">
                                             <span class="text-muted text-center ml-3">Add To WishList</span>
-                                            
+
                                             @foreach (Auth::user()->wishlists as $wishlist)
                                                 <button class="dropdown-item btn btn-block"
                                                     onclick="addToWishlist({{ $wishlist->id }},{{ $product->id }})">{{ $wishlist->name }}</button>
@@ -233,19 +233,15 @@
                             class="bg-secondary px-2">{{ Setting::get('subscribe-title') }}</span></h2>
                     <p>{{ Setting::get('subscribe-description') }}</p>
                 </div>
-                <form action="{{ route('subscribe.store') }}" method="POST">
-                    @csrf
-                    @error('email')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
+
                     <div class="input-group">
                         <input type="text" class="form-control border-white p-4" name="email"
-                            value='{{ old('email') }}' placeholder="Email Goes Here">
+                            value='{{ old('email') }}' placeholder="Email Goes Here" id="subscriber_email">
                         <div class="input-group-append">
-                            <button class="btn btn-primary px-4">Subscribe</button>
+                            <button class="btn btn-primary px-4" onclick="newSubscriber()">Subscribe</button>
                         </div>
                     </div>
-                </form>
+
             </div>
         </div>
     </div>
