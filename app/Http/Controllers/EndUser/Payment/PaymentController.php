@@ -11,136 +11,153 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
 use anlutro\LaravelSettings\Facades\Setting;
 use App\Events\OrderPlaced;
-use App\Events\OrderShipped;
 use App\Events\OrderSubmited as EventsOrderSubmited;
-use Srmklive\PayPal\Services\ExpressCheckout;
+use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use App\Http\Requests\Checkout\PaymentRequest;
 
 class PaymentController extends Controller
 {
-    public function index(Order $order){
+    public function index(Order $order)
+    {
         $user_id = auth()->user()->id;
         $subTotal = CartExtra::calcSubTotal($order->items);
         $total = CartExtra::calcTotal($order->items);
-        return view('endUser.pages.checkout.index',[
-            'order'=>$order,
-            'countries'=>Country::get(),
-            'user_addresses'=>Address::with('country')->where('user_id',$user_id)->get(),
-            'subTotal'=>$subTotal,
-            'total'=> $total + Setting::get('tax'),
+        return view('endUser.pages.checkout.index', [
+            'order' => $order,
+            'countries' => Country::get(),
+            'user_addresses' => Address::with('country')->where('user_id', $user_id)->get(),
+            'subTotal' => $subTotal,
+            'total' => $total + Setting::get('tax'),
             // 'discount'=>number_format(($subTotal - $total) + Setting::get('tax')),
-            'first_address'=>Address::with('country')->where('user_id',$user_id)->first()
+            'first_address' => Address::with('country')->where('user_id', $user_id)->first()
         ]);
     }
 
     public function payment(PaymentRequest $request, Order $order)
     {
-        $data = [];
-        $items = [];
         $discount = 0;
         $tax = Setting::get('tax');
-        $total = $tax;
-        $address = $request->address_id;
-        $order->address_id = $address;
+        $total = CartExtra::calcTotal($order->items) + $tax;
+        $address_id = $request->address_id;
+        $order->address_id = $address_id;
         $order->save();
 
-        foreach ($order->items as $item) {
-            $itemPrice = round($item->product->price - (($item->product->discount / 100) * $item->product->price));
-            for ($i=1; $i <= $item->quantity ; $i++) {
-                $items[] = [
-                    'name' => $item->product->name,
-                    'price' => $itemPrice,
-                    'desc' => $item->product->description,
-                    'qty' => 1,
-                ];
-            }
-            $total += $itemPrice * $item->quantity;
-        }
-
-
-        $items[] = [
-            'name'=>'deliver tax',
-            'price'=>$tax,
-            'desc'=>"deliver tax for order #{$order->order_serial_code}",
-            'qty'=>1
-        ];
 
         if (Session::has('voucher')) {
             $voucher = Session::get('voucher');
             $voucherDiscount = $voucher['discount_value'];
-
-            // Add voucher discount as a separate line item
-            $items[] = [
-                'name' => 'Voucher Discount',
-                'price' => -$voucherDiscount,
-                'desc' => "Voucher Discount - #{$voucher['voucher_code']}",
-                'qty' => 1,
-            ];
-
-            $discount = $voucherDiscount;
-            $total -= $discount;
+            $total -= $voucherDiscount;
         }
 
+        Session::put('order_info',[
+            'order_id'=>$order->id,
+            'total'=>$order->total
+        ]);
 
 
-        $data['items'] = $items;
-        $data['invoice_id'] = $order->order_serial_code;
-        $data['invoice_description'] = "Order Serial Code #{$data['invoice_id']}";
-        $data['return_url'] = "http://127.0.0.1:8000/checkout/payment/success";
-        $data['cancel_url'] = "http://127.0.0.1:8000/checkout/payment/cancel";
-        $data['total'] = $total;
+        $provider = new PayPalClient;
+        $provider->setApiCredentials(config('paypal'));
+        $paypalToken = $provider->getAccessToken();
 
-        $provider = new ExpressCheckout;
-        $options = [
-            'BRANDNAME' => 'Tsouq',
-            'CHANNELTYPE' => 'Merchant'
-        ];
-        $response = $provider->addOptions($options)->setExpressCheckout($data, true);
-        return redirect($response['paypal_link']);
-    }
+        $data = json_decode('{
+            "intent": "CAPTURE",
+            "detail": {
+                    "invoice_number": "'.$order->order_serial_code.'",
+                    "reference": "deal-ref",
+                    "invoice_date": "'. date('Y-m-d') .'",
+                    "currency_code": "USD",
+                    "note": "Thank you for your purchase.",
+                    "term": "No refunds after 30 days.",
+                    "memo": "This is a long contract",
+                    "payment_term": {
+                        "term_type": "NET_10",
+                        "due_date": "2018-11-22"
+                    }
+                },
 
-    public function success(Request $request){
-        $provider = new ExpressCheckout;
-        $response = $provider->getExpressCheckoutDetails($request->token);
-        $order_serial_code = $response['INVNUM'];
-        $order = explode('-',$order_serial_code);
-        $order = Order::with('items')->where('id',$order[2])->first();
-        if(in_array(strtoupper($response['ACK']),['SUCCESS','SUCCESSWITHWARNING'])){
+            "purchase_units": [
+                {
+                    "amount": {
+                        "currency_code": "USD",
+                        "value": ' . $total . '
+                    }
+                }
+            ],
 
-            event(new OrderPlaced($order));
-
-            $order->status = 'in_progress';
-            $order->total_price = $response['AMT'] - Setting::get('tax');
-            $order->transactionId =  $response['TOKEN'];
-            $order->save();
-            foreach ($order->items as $item) {
-                $itemPrice = round($item->product->price - (($item->product->discount / 100) * $item->product->price));
-                $item->price = $item->product->price;
-                $item->final_price = $itemPrice;
-                $item->discount = $item->product->discount;
-                $item->discount_value = ($item->product->discount / 100) * $item->product->price;
-                $item->save();
-                $item->product->count -= $item->quantity;
-                $item->product->solded_out += $item->quantity;
-                $item->product->save();
+            "application_context": {
+                "brand_name": "Tsouq",
+                "return_url": "' . route('checkout.success') . '",
+                "cancel_url": "' . route('checkout.cancel') . '"
             }
-            Session::forget('voucher');
-            Session::flash('success','paid successfully for order #'. $order_serial_code);
-            return redirect()->route('shop.show');
+        }', true);
+
+        $response = $provider->createOrder($data);
+
+        if(isset($response['id']) && $response['id'] != null){
+
+            foreach($response['links'] as $link){
+                if($link['rel'] === 'approve'){
+                    return redirect()->away($link['href']);
+                }
+            }
+        }else{
+            return redirect()->route('checkout.cancel');
         }
 
 
-        Session::flash('error','payment failed for this order');
-        return redirect()->route('checkout.show',['order'=>$order->id]);
+
     }
 
-    public function cancel(Request $request){
-        $provider = new ExpressCheckout;
-        $response = $provider->getExpressCheckoutDetails($request->token);
-        $order_serial_code = $response['INVNUM'];
-        $order = explode('-',$order_serial_code);
-        $order = Order::where('id',$order[2])->first();
-        Session::flash('success','paid cancel for order ');
-        return redirect()->route('checkout.show',['order'=>$order->id]);
+    public function success(Request $request)
+    {
+        $provider = new PayPalClient;
+        $provider->setApiCredentials(config('paypal'));
+        $paypalToken = $provider->getAccessToken();
+        if(!Session::has('order_info')){
+            return redirect()->route('shop.show')->with('error','something went wrong we could not finish your purchase!');
+        }
+        $response = $provider->capturePaymentOrder($request->token);
+        $order_info = Session::get('order_info');
+        $order = Order::with('items')->where('id',$order_info['order_id'])->first();
+        if(isset($response['status']) && $response['status'] == 'COMPLETED'){
+                $transactionId = $response['purchase_units'][0]['payments']['captures'][0]['id'] ?? null;
+                $order->status = 'in_progress';
+                $order->transactionId = $transactionId;
+                $order->total_price = $order_info['total'];
+                $order->save();
+                foreach ($order->items as $item) {
+                    $itemPrice = round($item->product->price - (($item->product->discount / 100) * $item->product->price));
+                    $item->price = $item->product->price;
+                    $item->final_price = $itemPrice;
+                    $item->discount = $item->product->discount;
+                    $item->discount_value = ($item->product->discount / 100) * $item->product->price;
+                    $item->save();
+                    $item->product->count -= $item->quantity;
+                    $item->product->solded_out += $item->quantity;
+                    $item->product->save();
+                }
+                Session::forget('voucher');
+                Session::forget('order_info');
+                Session::flash('success', 'paid successfully for order #' . $order->order_serial_code);
+                event(new OrderPlaced($order));
+                return redirect()->route('shop.show');
+        }
+        Session::flash('error', 'payment failed for this order');
+        return redirect()->route('checkout.show', ['order' => $order->id]);
+    }
+
+    public function cancel(Request $request)
+    {
+        $provider = new PayPalClient;
+        $provider->setApiCredentials(config('paypal'));
+        $paypalToken = $provider->getAccessToken();
+        if(!Session::has('order_info')){
+            return redirect()->route('shop.show')->with('error','purchase canceled!');
+        }
+        $order_info = Session::get('order_info');
+        Session::forget('order_info');
+        $order = Order::with('items')->where('id',$order_info['order_id'])->first();
+        Session::flash('error', 'paid cancel for order ');
+        return redirect()->route('checkout.show', ['order' => $order->id]);
     }
 }

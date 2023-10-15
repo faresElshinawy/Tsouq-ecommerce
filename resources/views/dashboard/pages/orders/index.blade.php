@@ -65,7 +65,10 @@
                                     <th>Serial Code</th>
                                     <th>User</th>
                                     <th>Status</th>
-                                    <th>total Price</th>
+                                    <th>Total Price</th>
+                                    @can('set refund')
+                                        <th>Transaction ID</th>
+                                    @endcan
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -90,6 +93,9 @@
                                         </td>
                                         <td>{{ $order->status != 'pending' ? ($order->total_price ? $order->total_price : 'there is a problem cant get the final price') : 'not submited yet' }}
                                         </td>
+                                        @can('set refund')
+                                            <td>{{ $order->transactionId }}</td>
+                                        @endcan
                                         <td>
                                             <div class="dropdown">
                                                 <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
@@ -109,11 +115,11 @@
                                                         @endif
                                                     @endcan
 
-                                                    {{-- @can('set refund') --}}
+                                                    @can('set refund')
                                                         <a class="dropdown-item"
-                                                            href="{{route('orders-refunds.create',['order'=>$order->id])}}"
-                                                            ><i class='bx bx-refresh'></i> Set Refunds</a>
-                                                    {{-- @endcan --}}
+                                                            href="{{ route('orders-refunds.create', ['order' => $order->id]) }}"><i
+                                                                class='bx bx-refresh'></i> Set Refunds</a>
+                                                    @endcan
 
                                                     @can('order delete')
                                                         <form action="{{ route('orders.destroy', ['order' => $order->id]) }}"

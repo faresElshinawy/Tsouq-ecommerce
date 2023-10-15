@@ -30,6 +30,7 @@ class ProductUpdate implements ShouldBroadcast
         $this->created_at = now()->format('Y-m-d H:i:s');
         $this->data = [
             'username'=>$user->name,
+            'user_id'=>$user->id,
             'notify_type'=>'product',
             'product_id'=>$product->id,
             'product_name'=>$product->name,

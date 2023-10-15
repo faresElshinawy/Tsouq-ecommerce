@@ -17,17 +17,14 @@ class RefundFactory extends Factory
     public function definition(): array
     {
         return [
-            'refundable_id'=>fake()->numberBetween(1,10),
-            'refundable_type'=>fake()->randomElement([
-                'App\Models\Order',
-                'App\models\orderItem'
-            ]),
+            'refundable_id'=>fake()->numberBetween(1,5),
+            'refundable_type'=>'App\Models\Order',
             'total_amount'=>fake()->numberBetween(100,10000),
             'refund_reason'=>fake()->randomElement([
-                'broken',
-                'item is used',
-                'wrong color',
-                'wrong item',
+                'broken items',
+                'items is used',
+                'wrong order',
+                'wrong address',
             ])
         ];
     }

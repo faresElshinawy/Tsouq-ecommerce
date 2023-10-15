@@ -31,32 +31,32 @@
             // Enable pusher logging - don't include this in production
             // Pusher.logToConsole = true;
 
-            var pusher = new Pusher("{{env('PUSHER_APP_Key')}}", {
+            var pusher = new Pusher("{{ env('PUSHER_APP_Key') }}", {
                 cluster: 'ap2'
             });
 
             var userChannel = pusher.subscribe('user-channel');
             userChannel.bind('user-event', function(data) {
-                        var userEditUrl = "{{ route('users.edit', ['user' => ':userId']) }}";
-                        userEditUrl = userEditUrl.replace(':userId', data.data.user_id);
-                        var html = `
+                var userEditUrl = "{{ route('users.edit', ['user' => ':userId']) }}";
+                userEditUrl = userEditUrl.replace(':userId', data.data.user_id);
+                var html = `
                             <a class="dropdown-item p-2" href="${userEditUrl}">
                                 <div class="notification-item rounded bg-label-muted btn-outline-primary p-2">
                                     <div class="notification-avatar">${data.data.user_name} ${data.data.action}</div>
-                                    <span class="text-muted">${data.created_at}</span>
+                                    <span class="text-muted">${data.data.created_at}</span>
                                 </div>
                             </a>
                         `;
-                        $('#notifications-container-real-time-result').append(html);
-                        $('#notification-holder-message').empty();
-                        $('#notificationsDropdown').addClass('text-primary');
+                    $('#notifications-container-real-time-result').append(html);
+                    $('#notification-holder-message').empty();
+                    $('#notificationsDropdown').addClass('text-primary');
             });
 
             var orderChannel = pusher.subscribe('order-channel');
-            orderChannel.bind('order-event',function(data){
+            orderChannel.bind('order-event', function(data) {
                 var orderEditUrl = "{{ route('orders.edit', ['order' => ':orderId']) }}";
-                        orderEditUrl = orderEditUrl.replace(':orderId', data.data.order_id);
-                        var html = `
+                orderEditUrl = orderEditUrl.replace(':orderId', data.data.order_id);
+                var html = `
                                     <a class="dropdown-item p-2"
                                         href="${orderEditUrl}">
                                         <div class="notification-item rounded bg-label-muted btn-outline-primary p-2"
@@ -71,18 +71,20 @@
                                         </div>
                                     </a>
                             `;
-                        $('#notifications-container-real-time-result').append(html);
-                        $('#notification-holder-message').empty();
-                        $('#notificationsDropdown').addClass('text-primary');
+                if (data.data.user_id != "{{ Auth::user()->id }}") {
+                    $('#notifications-container-real-time-result').append(html);
+                    $('#notification-holder-message').empty();
+                    $('#notificationsDropdown').addClass('text-primary');
+                }
             });
 
 
             var productChannel = pusher.subscribe('product-channel');
-            productChannel.bind('product-create',function(data){
+            productChannel.bind('product-create', function(data) {
                 var productEditUrl = "{{ route('products.edit', ['product' => ':productId']) }}";
-                        productEditUrl = productEditUrl.replace(':productId', data.data.product_id);
-                        console.log(data.data.created_at)
-                        var html = `
+                productEditUrl = productEditUrl.replace(':productId', data.data.product_id);
+                console.log(data.data.created_at)
+                var html = `
                                     <a class="dropdown-item p-2"
                                         href="${productEditUrl}">
                                         <div class="notification-item rounded bg-label-muted btn-outline-primary p-2"
@@ -97,17 +99,19 @@
                                         </div>
                                     </a>
                             `;
-                        $('#notifications-container-real-time-result').append(html);
-                        $('#notification-holder-message').empty();
-                        $('#notificationsDropdown').addClass('text-primary');
+                if (data.data.user_id != "{{ Auth::user()->id }}") {
+                    $('#notifications-container-real-time-result').append(html);
+                    $('#notification-holder-message').empty();
+                    $('#notificationsDropdown').addClass('text-primary');
+                }
             });
 
 
-            productChannel.bind('product-update',function(data){
+            productChannel.bind('product-update', function(data) {
                 var productEditUrl = "{{ route('products.edit', ['product' => ':productId']) }}";
-                        productEditUrl = productEditUrl.replace(':productId', data.data.product_id);
-                        console.log(data.data.created_at)
-                        var html = `
+                productEditUrl = productEditUrl.replace(':productId', data.data.product_id);
+                console.log(data.data.created_at)
+                var html = `
                                     <a class="dropdown-item p-2"
                                         href="${productEditUrl}">
                                         <div class="notification-item rounded bg-label-muted btn-outline-primary p-2"
@@ -122,19 +126,21 @@
                                         </div>
                                     </a>
                             `;
-                        $('#notifications-container-real-time-result').append(html);
-                        $('#notification-holder-message').empty();
-                        $('#notificationsDropdown').addClass('text-primary');
+                if (data.data.user_id != "{{ Auth::user()->id }}") {
+                    $('#notifications-container-real-time-result').append(html);
+                    $('#notification-holder-message').empty();
+                    $('#notificationsDropdown').addClass('text-primary');
+                }
             });
 
 
             var chatChannel = pusher.subscribe('chat');
 
-            chatChannel.bind('new-message',function(data){
+            chatChannel.bind('new-message', function(data) {
                 var chatUrl = "{{ route('chats.show', ['chat' => ':chatId']) }}";
-                        chatUrl = chatUrl.replace(':chatId', data.message.chat_id);
-                        console.log(data.message.created_at)
-                        var html = `
+                chatUrl = chatUrl.replace(':chatId', data.message.chat_id);
+                console.log(data.message.created_at)
+                var html = `
                                     <a class="dropdown-item p-2"
                                         href="${chatUrl}">
                                         <div class="notification-item rounded bg-label-muted btn-outline-primary p-2"
@@ -149,9 +155,9 @@
                                         </div>
                                     </a>
                             `;
-                        $('#notifications-container-real-time-result').append(html);
-                        $('#notification-holder-message').empty();
-                        $('#notificationsDropdown').addClass('text-primary');
+                $('#notifications-container-real-time-result').append(html);
+                $('#notification-holder-message').empty();
+                $('#notificationsDropdown').addClass('text-primary');
             });
 
 

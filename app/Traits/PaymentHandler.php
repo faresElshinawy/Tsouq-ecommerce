@@ -4,33 +4,37 @@ namespace App\Traits;
 
 use App\Models\Order;
 use Illuminate\Http\Request;
-use Srmklive\PayPal\Services\ExpressCheckout;
-use Srmklive\PayPal\Providers\PayPalServiceProvider;
+use Srmklive\PayPal\Services\PayPal as PayPalClient;
 
 trait PaymentHandler
 {
 
-    protected $paypalService;
-
-    public function __construct(ExpressCheckout $paypalService)
+    public function processRefund(Order $order)
     {
-        $this->paypalService = $paypalService;
-    }
-
-    public function processRefund(Request $request, Order $order)
-    {
+        $provider = new PayPalClient;
+        $provider->setApiCredentials(config('paypal'));
+        $paypalToken = $provider->getAccessToken();
         $transactionId = $order->transactionId;
-        $refundAmount = $request->get('total_amount');
+        $refundAmount = request()->get('total_amount');
+        $refundReason = request()->get('refund_reason');
+        $response = $provider->refundCapturedPayment(
+            $transactionId,
+            $order->order_serial_code,
+            $refundAmount,
+            $refundReason
+        );
 
-        $response = $this->paypalService->refundTransaction($transactionId, $refundAmount);
-        dd($response);
-        if (is_array($response) && array_key_exists('refund_status', $response)) {
 
-            if ($response['refund_status'] === 'refunded') {
-                return true;
+        if (is_array($response) && array_key_exists('status', $response)) {
+
+            if ($response['status'] === 'COMPLETED') {
+                return 'COMPLETED';
             }
         }
 
-        return false;
+        if(is_array($response) && array_key_exists('error', $response)){
+            $issue = $response['error']['details'][0]['description'] ?? null;
+            return $issue;
+        }
     }
 }

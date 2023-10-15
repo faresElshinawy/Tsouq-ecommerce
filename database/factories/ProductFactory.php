@@ -70,7 +70,7 @@ class ProductFactory extends Factory
             'user_id'=> fake()->numberBetween(1,50),
             'solded_out'=>fake()->numberBetween(1,50),
             'refunds'=>fake()->numberBetween(1,20),
-            'total_gain'=>fake()->numberBetween(500,5000),
+            'total_gain'=>fake()->numberBetween(50,1000),
         ];
     }
 }

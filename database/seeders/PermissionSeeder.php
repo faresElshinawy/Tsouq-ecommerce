@@ -35,6 +35,9 @@ class PermissionSeeder extends Seeder
             'subscriber all',
             'subscriber delete',
 
+            'refund all',
+            'set refund',
+
 
 
             'order all',

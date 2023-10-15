@@ -45,7 +45,7 @@ use App\Http\Controllers\Dashboard\WishListItem\WishListItemController;
 */
 
 
-Route::group(['middleware' => ['prevent-back-history' , 'userActivity','throttle:50,1']],function(){
+Route::group(['middleware' => ['prevent-back-history' , 'userActivity','throttle:80,1']],function(){
 
 
 
@@ -403,15 +403,6 @@ Route::group(['middleware' => ['prevent-back-history' , 'userActivity','throttle
             Route::post('/{order}/store','store')->name('store');
         });
 
-        Route::group([
-            'prefix'=>'items-refunds',
-            'as'=>'items-refunds.',
-            'controller'=>ItemRefundController::class
-        ],function (){
-            Route::get('/items','index')->name('all');
-            Route::get('/{orderItem}/create','create')->name('create');
-            Route::get('/{orderItem}/store','store')->name('store');
-        });
 
     });
 

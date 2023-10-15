@@ -30,6 +30,7 @@ class OrderPlaced implements ShouldBroadcast
         $this->created_at = now()->format('Y-m-d H:i:s');
         $this->data = [
             'username'=>Auth::user()->name,
+            'user_id'=>Auth::user()->id,
             'order_id'=>$order->id,
             'notify_type'=>'order',
             'order_code'=>$order->order_serial_code,

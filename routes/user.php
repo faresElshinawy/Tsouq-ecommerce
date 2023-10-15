@@ -36,7 +36,7 @@ here is where you can get access to all end user routes
 */
 
 
-Route::group(['middleware' => ['prevent-back-history' , 'userActivity','throttle:50,1']],function(){
+Route::group(['middleware' => ['prevent-back-history' , 'userActivity','throttle:80,1']],function(){
 
 
     Route::group([

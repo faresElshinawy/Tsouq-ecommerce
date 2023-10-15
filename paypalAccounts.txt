@@ -1,0 +1,9 @@
+dev acc: Tsouq@test.com
+busines acc: sb-aoktj27299653@business.example.com
+personal acc: sb-y6smr27769918@personal.example.com
+
+general password: Tsouq5060
+
+client id: AXoxBg0yE8prFJOmtiOY0RELBg6UpqQ6I-Uez7aHYDIr1wD3B7r-VWOTMmA19_5UBncY7S0zX3zhG-Uc
+
+secret: EL3dZCPF5gosahScmcgi_EeLJSfyV6znzitPYqNiEgMT5J7RChp_xnB0vOfqAaLCoq8Jt45q1ZMkoT6H

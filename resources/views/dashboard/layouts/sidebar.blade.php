@@ -338,27 +338,19 @@
                                     <div data-i18n="Notifications">Orders</div>
                                 </a>
                             </li>
+
+                            @can('refund all')
+                                <li class="menu-item {{ Route::currentRouteNamed('orders-refunds.all') ? 'active' : null }}">
+                                    <a href="{{ route('orders-refunds.all') }}" class="menu-link">
+                                        <div data-i18n="Notifications">Refunds</div>
+                                    </a>
+                                </li>
+                            @endcan
+
                         </ul>
                     </li>
 
-                    <li class="menu-item ">
-                        <a href="javascript:void(0);" class="menu-link menu-toggle">
-                            <box-icon type='solid' name='user'></box-icon>
-                            <div data-i18n="Account Settings">Refunds</div>
-                        </a>
-                        <ul class="menu-sub">
-                            <li class="menu-item ">
-                                <a href="{{ route('orders.all') }}" class="menu-link">
-                                    <div data-i18n="Notifications">Items Refunds</div>
-                                </a>
-                            </li>
-                            <li class="menu-item ">
-                                <a href="{{ route('orders-refunds.all') }}" class="menu-link">
-                                    <div data-i18n="Notifications">Orders Refunds</div>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
+
                 @endcan
 
 
