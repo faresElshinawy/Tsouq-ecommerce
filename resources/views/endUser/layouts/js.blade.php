@@ -79,40 +79,47 @@
     @endauth
 
     <script>
-                function newSubscriber(){
-                    name = $('#subscriber_name').val() ?? null;
-                    email = $('#subscriber_email').val();
-                    $.ajax({
-                        url:"{{route('subscribe.store')}}",
-                        type:'post',
-                        datatype:'json',
-                        cache:false,
-                        data:{'_token':"{{csrf_token()}}" , 'name':name , 'email':email},
-                        success:function (data){
-                            if(data.code == 400){
-                                errors = [];
-                                for(key in data.errors){
-                                    if(data.errors.hasOwnProperty(key)){
-                                        errors.push(data.errors[key]);
-                                    }
+        function newSubscriber() {
+            $(document).ready(function() {
+                var name = $('#subscriber_name').val() ?? null;
+                var email = $('#subscriber_email').val() == undefined || $('#subscriber_email').val() == '' ? $('#subscriber_email-footer').val() : $('#subscriber_email').val();
+                $.ajax({
+                    url: "{{ route('subscribe.store') }}",
+                    type: 'post',
+                    datatype: 'json',
+                    cache: false,
+                    data: {
+                        '_token': "{{ csrf_token() }}",
+                        'name': name,
+                        'email': email
+                    },
+                    success: function(data) {
+                        if (data.code == 400) {
+                            errors = [];
+                            for (key in data.errors) {
+                                if (data.errors.hasOwnProperty(key)) {
+                                    errors.push(data.errors[key]);
                                 }
-                                errors.join('\n');
-                                Swal.fire({
-                                    icon:'error',
-                                    title:data.message,
-                                    html:errors,
-                                    showConfirmButton:false
-                                });
-                            }else if(data.code == 200){
-                                Swal.fire({
-                                    icon:'success',
-                                    title:data.message,
-                                    showConfirmButton:false
-                                });
-                                $('#subscriber_name').val('');
-                                $('#subscriber_email').val('')
                             }
+                            errors.join('\n');
+                            Swal.fire({
+                                icon: 'error',
+                                title: data.message,
+                                html: errors,
+                                showConfirmButton: false
+                            });
+                        } else if (data.code == 200) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: data.message,
+                                showConfirmButton: false
+                            });
+                            $('#subscriber_name').val('');
+                            $('#subscriber_email').val('');
+                            $('#subscriber_email-footer').val('');
                         }
-                    });
-                }
+                    }
+                });
+            })
+        }
     </script>

@@ -417,51 +417,54 @@
 
 
         function deleteWishlist(wishlist_id){
-            $.ajax({
-                url:"{{route('user-wishlists.destroy')}}",
-                type:"post",
-                datatype:"json",
-                cache:false,
-                data:{'_token':"{{csrf_token()}}" , 'wishlist_id':wishlist_id},
-                success:function (data){
-                    if (data.code == 400) {
-                        var errors = [];
-                        var html = '';
-                        console.log(errors)
-                        for (var key in data.errors) {
-                            if (data.errors.hasOwnProperty(key)) {
-                                errors.push(data.errors[key]);
+            $(document).ready(function (){
+                $.ajax({
+                    url:"{{route('user-wishlists.destroy')}}",
+                    type:"post",
+                    datatype:"json",
+                    cache:false,
+                    data:{'_token':"{{csrf_token()}}" , 'wishlist_id':wishlist_id},
+                    success:function (data){
+                        if (data.code == 400) {
+                            var errors = [];
+                            var html = '';
+                            console.log(errors)
+                            for (var key in data.errors) {
+                                if (data.errors.hasOwnProperty(key)) {
+                                    errors.push(data.errors[key]);
+                                }
+                            }
+                            html = errors.join('<br>');
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'validation error',
+                                html: html,
+                                showConfirmButton: false
+                            })
+                        } else if (data.code == 200) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: data.message,
+                                showConfirmButton: false
+                            });
+                            var deleteMessage =`<p class="text-center text-muted mt-5">${data.message}</p>`;
+                            var message = `<p class="text-center text-muted mt-5">Choose Wishlist To Show Items</p>`;
+                            $(`#wishlist-${wishlist_id}-div`).empty().html('');
+                            $('#wishlist-content').html(message);
+                            $(`#wishlist${wishlist_id}-items-div`).remove();
+                            $('#wishlist-items-count').empty().text(data.data.wishlists_items_count);
+                            if(!data.data.wishlists_count){
+                                var html = `
+                                <div class="custom-control mb-3 ">
+                                    <span class="text-muted">{{ Setting::get('no-wishlists-holder') }}</span>
+                                </div>
+                                `;
+                                $('#wishlist-container').html(html);
                             }
                         }
-                        html = errors.join('<br>');
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'validation error',
-                            html: html,
-                            showConfirmButton: false
-                        })
-                    } else if (data.code == 200) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: data.message,
-                            showConfirmButton: false
-                        });
-                        var deleteMessage =`<p class="text-center text-muted mt-5">${data.message}</p>`;
-                        var message = `<p class="text-center text-muted mt-5">Choose Wishlist To Show Items</p>`;
-                        $(`#wishlist-${wishlist_id}-div`).empty().html('');
-                        $(`#wishlist${wishlist_id}-items-div`).remove().html(message);
-                        $('#wishlist-items-count').empty().text(data.data.wishlists_items_count);
-                        if(!data.data.wishlists_count){
-                            var html = `
-                            <div class="custom-control mb-3 ">
-                                <span class="text-muted">{{ Setting::get('no-wishlists-holder') }}</span>
-                            </div>
-                            `;
-                            $('#wishlist-container').html(html);
-                        }
                     }
-                }
-            })
+                })
+            });
         }
 
 

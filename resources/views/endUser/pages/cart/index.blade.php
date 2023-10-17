@@ -124,7 +124,7 @@
                         $('#cart-sub-total').empty().text(parseInt(data.data.subTotal));
                         $('#cart-total').empty().text(parseInt(data.data.total));
                         $('#discount-total').empty().text(parseInt(data.data.discount));
-                        $('#cart_count').empty().text(cartCount);
+                        $('#cart_count').empty().text(data.data.cartCount);
                         Swal.fire({
                             icon:'success',
                             title:data.message,
@@ -136,7 +136,6 @@
                         $('#cart-items-table').prepend(html);
                     } else if(data.code == 422){
                         html = "<div class='alert alert-danger'><ul>";
-                            console.log(data)
                         if(Array.isArray(data.errors.id)){
                             data.errors.id.forEach(function(message){
                                 html += "<li>"+message+"</li>";
@@ -209,7 +208,7 @@
                 });
             })
         }
-        
+
 
 
     </script>

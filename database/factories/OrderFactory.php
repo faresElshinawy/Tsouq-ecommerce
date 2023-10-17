@@ -20,7 +20,7 @@ class OrderFactory extends Factory
             'order_serial_code'=>fake()->sentence(1),
             'user_id'=>fake()->numberBetween(1,50),
             'address_id'=>fake()->numberBetween(1,20),
-            'status'=>fake()->randomElement(['pending','in_progress','delivered','rejected']),
+            'status'=>fake()->randomElement(['pending','in_progress','delivered','refunded']),
         ];
     }
 }

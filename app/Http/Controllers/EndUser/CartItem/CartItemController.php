@@ -150,7 +150,8 @@ class CartItemController extends Controller
             $data = [
                 'total'=>$total + Setting::get('tax'),
                 'subTotal'=>$subTotal,
-                'discount'=>$discount
+                'discount'=>$discount,
+                'cartCount'=> $order->items->count()
             ];
             return $this->apiResponse('deleted',$data);
         }
