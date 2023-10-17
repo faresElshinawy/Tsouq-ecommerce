@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\user;
 use App\Models\WishList;
+use App\Events\UserRegistration;
 
 class UserObserver
 {
@@ -16,6 +17,7 @@ class UserObserver
             'user_id'=>$user->id,
             'name'=>'defualt'
         ]);
+        event(new UserRegistration($user));
     }
 
     /**

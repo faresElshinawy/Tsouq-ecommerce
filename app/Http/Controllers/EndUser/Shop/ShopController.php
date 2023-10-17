@@ -25,7 +25,6 @@ class ShopController extends Controller
     public function index(Request $request)
     {
 
-        // dd($this->getRandomImageUrlFromGoogle('phone'));
 
         if ($request->ajax()) {
             return $this->filterAndSearch($request);
@@ -89,8 +88,8 @@ class ShopController extends Controller
             if ($filter == 'Best Rating') {
                 $subquery = DB::table('products')
                     ->leftJoin('rates', 'rates.product_id', '=', 'products.id')
-                    ->select('products.id', 'products.name', DB::raw('avg(rates.rate) as avg_rate'))
-                    ->groupBy('products.id', 'products.name')
+                    ->select('products.id', 'products.name as pro_name', DB::raw('avg(rates.rate) as avg_rate'))
+                    ->groupBy('products.id', 'pro_name')
                     ->havingRaw('COUNT(rates.rate) >= 2');
 
                 $products->joinSub($subquery, 'aggregated_products', function ($join) {

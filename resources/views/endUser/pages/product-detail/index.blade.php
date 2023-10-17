@@ -165,11 +165,17 @@
                         </button>
                     </div>
                 </div>
-                @if ($product->count() > 0)
-                    <button class="btn btn-primary px-3" id="add-to-cart-btn"><i class="fa fa-shopping-cart mr-1"></i>
-                        Add To Cart</button>
-                @endif
+                @guest
+                    @if ($product->count > 0)
+                        <a class="btn btn-primary px-3" href="{{route('user-login.create')}}" id="add-to-cart-btn"><i class="fa fa-shopping-cart mr-1"></i>
+                            Add To Cart</a>
+                    @endif
+                @endguest
                 @auth
+                    @if ($product->count > 0)
+                        <button class="btn btn-primary px-3" id="add-to-cart-btn"><i class="fa fa-shopping-cart mr-1"></i>
+                            Add To Cart</button>
+                    @endif
                     <div class="dropdown">
                         <button class="btn btn-outline-muted  ml-2" data-toggle="dropdown">
                             <i class="bx bx-reset d-block d-sm-none"></i>
@@ -178,7 +184,7 @@
                         </button>
                         <div class="dropdown-menu rounded-0 m-0">
                             <span class="text-muted text-center ml-3">Add To WishList</span>
-                            @if (Auth::user()->count() > 0)
+                            @if (Auth::user()->wishlists->count() > 0)
                                 @foreach (Auth::user()->wishlists as $wishlist)
                                     <button class="dropdown-item btn"
                                         onclick="addToWishlist({{ $wishlist->id }},{{ $product->id }})">{{ $wishlist->name }}</button>
@@ -188,9 +194,9 @@
                     </div>
                 @endauth
             </div>
-            @if ($product->count() <= 0)
+            @if ($product->count <= 0)
                 <span class="text-muted h6">out of stock</span>
-            @elseif($product->count() < 20)
+            @elseif($product->count < 20)
                 <span class="text-danger h6">In Stock Only {{ $product->count() }} Left - Order Soon</span>
             @endif
             <div class="d-flex pt-2">
@@ -520,7 +526,14 @@
     });
 
 
-    function deleteRate(rate_id) {
+</script>
+
+@auth
+    <script>
+
+
+function deleteRate(rate_id) {
+    $(document).ready(function (){
         $.ajax({
             url: '{{ route('new-product-rate.destroy') }}',
             type: 'post',
@@ -555,12 +568,10 @@
                     $(`#rate-${rate_id}-holder`).remove()
                 }
             }
-        })
+        });
+    });
     }
-</script>
 
-@auth
-    <script>
         $('#new-review-btn').click(function() {
             var rate = $('input[name="rate"][type="number"]').val();
             var comment = $('textarea[name="comment"]').val();

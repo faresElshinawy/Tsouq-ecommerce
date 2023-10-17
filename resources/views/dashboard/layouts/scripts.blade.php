@@ -142,20 +142,20 @@
                 //     chatUrl = chatUrl.replace(':chatId', data.message.chat_id);
                 //     console.log(data.message.created_at)
                 //     var html = `
-                //                         <a class="dropdown-item p-2"
-                //                             href="${chatUrl}">
-                //                             <div class="notification-item rounded bg-label-muted btn-outline-primary p-2"
-                //                                 id="notification-item">
-                //                                 <div class="notification-avatar ">
-                //                                 ${data.username}
-                //                                 </div>
-                //                                 <div class="notification-content text-muted">
-                //                                         ${data.message.message}
-                //                                 </div>
-                //                                 <span class="text-muted">${data.created_at}</span>
-                //                             </div>
-                //                         </a>
-                //                 `;
+        //                         <a class="dropdown-item p-2"
+        //                             href="${chatUrl}">
+        //                             <div class="notification-item rounded bg-label-muted btn-outline-primary p-2"
+        //                                 id="notification-item">
+        //                                 <div class="notification-avatar ">
+        //                                 ${data.username}
+        //                                 </div>
+        //                                 <div class="notification-content text-muted">
+        //                                         ${data.message.message}
+        //                                 </div>
+        //                                 <span class="text-muted">${data.created_at}</span>
+        //                             </div>
+        //                         </a>
+        //                 `;
                 //     $('#notifications-container-real-time-result').append(html);
                 //     $('#notification-holder-message').empty();
                 //     $('#notificationsDropdown').addClass('text-primary');
@@ -168,6 +168,11 @@
         @can('customer servieces')
             <script>
                 $(document).ready(function() {
+
+                    var pusher = new Pusher("{{ env('PUSHER_APP_Key') }}", {
+                        cluster: 'ap2'
+                    });
+
                     var chatChannel = pusher.subscribe('chat');
 
                     chatChannel.bind('new-message', function(data) {
