@@ -63,6 +63,7 @@ Route::group(['middleware' => ['prevent-back-history' , 'userActivity','throttle
         });
 
 
+
         Route::group([
                 'prefix'=>'roles',
                 'as'=>'roles.',

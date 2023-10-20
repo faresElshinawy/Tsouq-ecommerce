@@ -13,7 +13,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 
-class SendOrderMailJob implements ShouldQueue
+class SendOrderMailJob 
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     protected $order;

@@ -88,6 +88,7 @@ public function __construct()
         DB::table('notifications')->where('data->order_id',$order->id)->where('notifiable_id',Auth::user()->id)->where('data->notify_type','order')->update([
             'read_at'=>now()
         ]);
+        
         return view('dashboard.pages.orders.edit',[
             'order'=>$order,
             'status'=>['in_progress','shipped','delivered','rejected']

@@ -3,7 +3,9 @@
 namespace App\Observers;
 
 use App\Models\Order;
+use App\Mail\OrderStatus;
 use App\Jobs\SendOrderMailJob;
+use Illuminate\Support\Facades\Mail;
 
 class OrderObserver
 {
@@ -12,7 +14,8 @@ class OrderObserver
      */
     public function created(Order $order): void
     {
-            SendOrderMailJob::dispatch($order)->onConnection('database');
+        // Mail::to('faresleshinawy560@gmail.com')->send(new OrderStatus($order));
+        SendOrderMailJob::dispatch($order)->onConnection('database');
     }
 
     /**
@@ -20,6 +23,7 @@ class OrderObserver
      */
     public function updated(Order $order): void
     {
+        // Mail::to('faresleshinawy560@gmail.com')->send(new OrderStatus($order));
         SendOrderMailJob::dispatch($order)->onConnection('database');
 
     }

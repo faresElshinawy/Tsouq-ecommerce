@@ -84,7 +84,6 @@
                 productChannel.bind('product-create', function(data) {
                     var productEditUrl = "{{ route('products.edit', ['product' => ':productId']) }}";
                     productEditUrl = productEditUrl.replace(':productId', data.data.product_id);
-                    console.log(data.data.created_at)
                     var html = `
                                         <a class="dropdown-item p-2"
                                             href="${productEditUrl}">
@@ -135,31 +134,6 @@
                 });
 
 
-                // var chatChannel = pusher.subscribe('chat');
-
-                // chatChannel.bind('new-message', function(data) {
-                //     var chatUrl = "{{ route('chats.show', ['chat' => ':chatId']) }}";
-                //     chatUrl = chatUrl.replace(':chatId', data.message.chat_id);
-                //     console.log(data.message.created_at)
-                //     var html = `
-        //                         <a class="dropdown-item p-2"
-        //                             href="${chatUrl}">
-        //                             <div class="notification-item rounded bg-label-muted btn-outline-primary p-2"
-        //                                 id="notification-item">
-        //                                 <div class="notification-avatar ">
-        //                                 ${data.username}
-        //                                 </div>
-        //                                 <div class="notification-content text-muted">
-        //                                         ${data.message.message}
-        //                                 </div>
-        //                                 <span class="text-muted">${data.created_at}</span>
-        //                             </div>
-        //                         </a>
-        //                 `;
-                //     $('#notifications-container-real-time-result').append(html);
-                //     $('#notification-holder-message').empty();
-                //     $('#notificationsDropdown').addClass('text-primary');
-                // });
 
 
             })

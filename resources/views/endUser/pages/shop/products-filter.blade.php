@@ -37,13 +37,8 @@
                                     <span class="text-muted text-center ml-3">Add To WishList</span>
 
                                     @foreach (Auth::user()->wishlists as $wishlist)
-                                        <form action="{{ route('wish-list-item.store', ['wishList' => $wishlist->id]) }}"
-                                            method="POST">
-                                            @csrf
-                                            @method('post')
                                             <input type="text" hidden value="{{ $product->id }}" name="product_id">
-                                            <button class="dropdown-item btn btn-block">{{ $wishlist->name }}</button>
-                                        </form>
+                                            <button class="dropdown-item btn btn-block" onclick="addToWishlist({{ $wishlist->id }},{{ $product->id }})">{{ $wishlist->name }}</button>
                                     @endforeach
 
                                 </div>

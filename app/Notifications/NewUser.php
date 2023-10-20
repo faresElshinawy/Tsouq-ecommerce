@@ -11,7 +11,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 
-class NewUser extends Notification implements ShouldBroadcast
+class NewUser extends Notification 
 {
     use Queueable;
     private $user;

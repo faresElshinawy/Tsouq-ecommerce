@@ -14,7 +14,7 @@ class dashboardAuth extends Middleware
     protected function redirectTo(Request $request)
     {
         if(!Auth::check()){
-            route('login.create');
+            return $request->expectsJson() ? null : route('login.create');
         }
     }
 }

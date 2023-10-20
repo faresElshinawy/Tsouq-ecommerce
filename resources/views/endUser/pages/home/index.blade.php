@@ -188,8 +188,9 @@
                             </div>
                         </div>
                         <div class="card-footer d-flex justify-content-between bg-light border">
-                            <a href="" class="btn btn-sm text-dark p-0"><i
-                                    class="fas fa-eye text-primary mr-1"></i>View Detail</a>
+                            <a href="{{ route('products-details.show', ['product' => $product->id]) }}"
+                                class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View
+                                Detail</a>
                             <div>
                                 @auth
                                     <div class="dropdown">
@@ -277,8 +278,9 @@
                             </div>
                         </div>
                         <div class="card-footer d-flex justify-content-between bg-light border">
-                            <a href="" class="btn btn-sm text-dark p-0"><i
-                                    class="fas fa-eye text-primary mr-1"></i>View Detail</a>
+                            <a href="{{ route('products-details.show', ['product' => $product->id]) }}"
+                                class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View
+                                Detail</a>
                             <div>
                                 @auth
                                     <div class="dropdown">

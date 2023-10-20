@@ -12,7 +12,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 
-class WeeklyProductNewMailJob implements ShouldQueue
+class WeeklyProductNewMailJob
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 

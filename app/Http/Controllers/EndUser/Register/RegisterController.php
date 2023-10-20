@@ -46,11 +46,9 @@ class RegisterController extends Controller
             'roles_name'=>['user']
         ]);
 
-        event(new UserRegistration($user));
-
 
         Session::flash('success','Account Created Successfully');
-        
+
         return redirect()->route('user-login.create');
     }
 }
