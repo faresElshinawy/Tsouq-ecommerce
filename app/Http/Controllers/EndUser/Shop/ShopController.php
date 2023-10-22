@@ -66,18 +66,18 @@ class ShopController extends Controller
             if ($query && $query != false) {
                 $products->where('name', 'like', "%{$query}%");
             }
-            if ($categories && $categories[0] != false) {
+            if ($categories && $categories[0] ?? false) {
                 $products->whereIn('category_id', $categories);
             }
-            if ($brands && $brands[0] != false) {
+            if ($brands && $brands[0] ?? false) {
                 $products->whereIn('brand_id', $brands);
             }
-            if ($sizes && $sizes[0] != false) {
+            if ($sizes && $sizes[0] ?? false) {
                 $products->whereHas('sizes', function ($query) use ($sizes) {
                     $query->whereIn('size_id', $sizes);
                 });
             }
-            if ($colors && $colors[0] != false) {
+            if ($colors && $colors[0] ?? false) {
                 $products->whereHas('colors', function ($query) use ($colors) {
                     $query->whereIn('color_id', $colors);
                 });

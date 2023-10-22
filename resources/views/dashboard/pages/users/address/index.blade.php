@@ -8,12 +8,12 @@
             <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">{{ $user }} /</span> All address</h4>
             <div class="card">
                 <div class="m-3 d-flex justify-content-between">
-                    <div class="col-3">
+                    {{-- <div class="col-3">
                         <input type="text" class="form-control" id="address-search" placeholder="Search...">
-                    </div>
+                    </div> --}}
                     {{-- <a class="btn btn-primary text-white" href="{{ route('addresses.create') }}">Add New address</a> --}}
                 </div>
-                <div class="table table-responsive text-nowrap">
+                <div class="table table-responsive text-nowrap ">
                     <div id="search-result">
                         <table class="table table-hover">
                             <thead>

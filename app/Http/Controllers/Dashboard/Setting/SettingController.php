@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\Dashboard\Setting;
 
 use App\Models\Setting;
+use App\Traits\UploadFile;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
 use App\Http\Requests\Setting\SettingUpdateRequest;
-use App\Traits\UploadFile;
 
 class SettingController extends Controller
 {
@@ -50,7 +51,6 @@ class SettingController extends Controller
         }elseif($value = $request->type){
             $value = $value;
         }
-        
         if(!$value ?? true){
             return redirect()->back()->with('error','we could not make your action');
         }
