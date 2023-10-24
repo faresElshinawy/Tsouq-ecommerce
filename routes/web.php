@@ -13,6 +13,7 @@ use App\Http\Controllers\Dashboard\Color\ColorController;
 use App\Http\Controllers\Dashboard\Order\OrderController;
 use App\Http\Controllers\Dashboard\Refund\RefundController;
 use App\Http\Controllers\Dashboard\Search\SearchController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Dashboard\Address\AddressController;
 use App\Http\Controllers\Dashboard\Country\CountryController;
 use App\Http\Controllers\Dashboard\Product\ProductController;
@@ -45,11 +46,23 @@ use App\Http\Controllers\Dashboard\WishListItem\WishListItemController;
 */
 
 
-Route::group(['middleware' => ['prevent-back-history' , 'userActivity','throttle:80,1']],function(){
+Route::group([
+    'middleware' => ['prevent-back-history' , 'userActivity','throttle:80,1'],
+    'prefix'=>'dashboard'
+    ],function(){
+
+    Route::group([
+        'prefix'=>'login',
+        'as'=>'login.',
+        'controller'=>AuthenticatedSessionController::class
+    ],function (){
+        Route::get('/','create')->name('create');
+        Route::post('/store','store')->name('store');
+    });
+
+    Route::middleware(['checkAccess'])->group(function(){
 
 
-
-    Route::prefix('dashboard')->middleware(['checkAccess'])->group(function(){
 
         Route::group([
             'prefix'=>'settings',

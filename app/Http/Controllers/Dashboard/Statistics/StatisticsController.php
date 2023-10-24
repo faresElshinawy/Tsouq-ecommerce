@@ -14,10 +14,10 @@ use App\Http\Controllers\Controller;
 class StatisticsController extends Controller
 {
 
-    // public function __construct()
-    // {
-    //     $this->middleware('permission:statistics show', ['only' => ['index']]);
-    // }
+    public function __construct()
+    {
+        $this->middleware('permission:access dashboard', ['only' => ['index']]);
+    }
 
     public function index(){
         return view('dashboard.pages.statistics.index',[

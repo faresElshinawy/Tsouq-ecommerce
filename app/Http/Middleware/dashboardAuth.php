@@ -5,16 +5,25 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Auth\Middleware\Authenticate as Middleware;
 
-class dashboardAuth extends Middleware
+class DashboardAuth
 {
-
-    protected function redirectTo(Request $request)
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     */
+    public function handle(Request $request, Closure $next): Response
     {
-        if(!Auth::check()){
-            return $request->expectsJson() ? null : route('login.create');
+        if(Auth::check() && !$request->user()->can('access dashboard')){
+            Session::flash('error','You Dont Have Permissions To Access This Content');
+            return redirect()->route('login.create');
+        }elseif(!Auth::check()){
+            Session::flash('error','You Need To Log In First');
+            return redirect()->route('login.create');
         }
+        return $next($request);
     }
 }
