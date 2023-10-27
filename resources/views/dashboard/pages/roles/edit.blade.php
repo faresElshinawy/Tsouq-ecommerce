@@ -24,6 +24,7 @@
                         <label class="col-sm-2 col-form-label" for="basic-default-name">Roles</label>
                         <div class="col-10">
 
+
                             @foreach ($permission as $permission_opt)
 
                                 <div class="form-check mt-3 d-inline-block mx-1">
@@ -52,3 +53,4 @@
         </div>
     </div>
 @endsection
+

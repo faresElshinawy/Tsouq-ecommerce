@@ -95,7 +95,7 @@
                                                 <div class="notification-content ">
                                                     ${data.data.notify_type}  ${data.data.product_name} ${data.data.action}
                                                 </div>
-                                                <span class="text-muted">${data.created_at}</span>
+                                                <span class="text-muted">${data.data.created_at}</span>
                                             </div>
                                         </a>
                                 `;
@@ -110,7 +110,6 @@
                 productChannel.bind('product-update', function(data) {
                     var productEditUrl = "{{ route('products.edit', ['product' => ':productId']) }}";
                     productEditUrl = productEditUrl.replace(':productId', data.data.product_id);
-                    console.log(data.data.created_at)
                     var html = `
                                         <a class="dropdown-item p-2"
                                             href="${productEditUrl}">
@@ -122,7 +121,7 @@
                                                 <div class="notification-content ">
                                                     ${data.data.notify_type}  ${data.data.product_name} ${data.data.action}
                                                 </div>
-                                                <span class="text-muted">${data.created_at}</span>
+                                                <span class="text-muted">${data.data.created_at}</span>
                                             </div>
                                         </a>
                                 `;
