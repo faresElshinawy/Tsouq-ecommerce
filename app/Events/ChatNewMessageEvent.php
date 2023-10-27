@@ -34,7 +34,7 @@ class ChatNewMessageEvent implements ShouldBroadcast
         $this->time = Carbon::parse($chatMessage->created_at)->format('h:i A, F jS');
         $this->username = $request->user()->name;
         $this->created_at = Carbon::parse($chatMessage->created_at)->diffForHumans();
-        $users = User::where('id','!=',$this->message->sender)->whereJsonContains('roles_name','customer service')->get();
+        $users = User::where('id','!=',$this->message->sender)->permission('customer service')->get();
         Notification::send($users,new ChatNewMessageNotification($this->message,$this->time));
     }
 

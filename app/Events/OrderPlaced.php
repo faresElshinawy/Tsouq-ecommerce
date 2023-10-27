@@ -38,7 +38,7 @@ class OrderPlaced implements ShouldBroadcast
             'created_at'=>Carbon::parse($this->created_at)->diffForHumans()
         ];
 
-        $users = User::where('id','!=',Auth::user()->id)->whereJsonContains('roles_name','notify')->get();
+        $users = User::where('id','!=',Auth::user()->id)->permission('notify')->get();
         Notification::send($users,new OrderSubmited($order,$this->created_at));
     }
 

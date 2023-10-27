@@ -16,7 +16,7 @@ class ChatController extends Controller
 
     public function __construct()
     {
-        $this->middleware('permission:customer servieces');
+        $this->middleware('can:customer service');
     }
 
     public function index()

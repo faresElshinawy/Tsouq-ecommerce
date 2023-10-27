@@ -19,7 +19,7 @@ class DashboardAuth
     {
         if(Auth::check() && !$request->user()->can('access dashboard')){
             Session::flash('error','You Dont Have Permissions To Access This Content');
-            return redirect()->route('login.create');
+            return redirect()->route('shop.show');
         }elseif(!Auth::check()){
             Session::flash('error','You Need To Log In First');
             return redirect()->route('login.create');

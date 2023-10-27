@@ -37,7 +37,7 @@ class ProductUpdate implements ShouldBroadcast
             'action'=>'updated',
             'created_at'=>Carbon::parse($this->created_at)->diffForHumans()
         ];
-        $users = User::where('id','!=',$user->id)->whereJsonContains('roles_name','notify')->get();
+        $users = User::where('id','!=',$user->id)->permission('notify')->get();
         Notification::send($users,new UpdateProduct($product,$this->created_at));
     }
 

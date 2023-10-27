@@ -8,6 +8,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class ProductSeeder extends Seeder
 {
+    use WithoutModelEvents;
     /**
      * Run the database seeds.
      */

@@ -123,9 +123,9 @@ class PermissionSeeder extends Seeder
 
             'access dashboard',
 
-            'notification access',
+            'notify',
 
-            'customer servieces',
+            'customer service',
 
             'chat all',
 

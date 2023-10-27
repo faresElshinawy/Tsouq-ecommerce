@@ -15,7 +15,7 @@ class NotificationController extends Controller
 
     public function __construct()
     {
-        $this->middleware('permission:notification access');
+        $this->middleware('can:notify');
     }
 
     public function index(){

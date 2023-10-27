@@ -8,11 +8,12 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class OrderSeeder extends Seeder
 {
+    use WithoutModelEvents;
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Order::factory()->count(100)->create();
+            Order::factory()->count(100)->create();
     }
 }

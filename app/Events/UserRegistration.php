@@ -31,7 +31,7 @@ class UserRegistration implements ShouldBroadcast
             'action' => 'created',
             'created_at'=>now()->format('Y-m-d H:i:s')
         ];
-        $users = User::where('id','!=',$user->id)->whereJsonContains('roles_name','notify')->get();
+        $users = User::where('id','!=',$user->id)->permission('notify')->get();
         Notification::send($users,new NewUser($user,$this->data['created_at']));
         $this->data['created_at'] = Carbon::parse($this->data['created_at'])->diffForHumans();
     }

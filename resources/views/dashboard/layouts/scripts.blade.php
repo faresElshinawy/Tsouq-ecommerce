@@ -24,7 +24,7 @@
 
 
 
-    @can('notification access')
+    @can('notify')
         <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
         <script>
             $(document).ready(function() {
@@ -139,7 +139,7 @@
             })
         </script>
 
-        @can('customer servieces')
+        @can('customer service')
             <script>
                 $(document).ready(function() {
 

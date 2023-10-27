@@ -38,7 +38,7 @@ class ProductCreate implements ShouldBroadcast
             'created_at'=>Carbon::parse($this->created_at)->diffForHumans()
         ];
 
-        $users = User::where('id','!=',$user->id)->whereJsonContains('roles_name','notify')->get();
+        $users = User::where('id','!=',$user->id)->permission('notify')->get();
         Notification::send($users,new CreateProduct($product,$this->created_at));
     }
 

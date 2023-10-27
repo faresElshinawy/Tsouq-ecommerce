@@ -23,11 +23,18 @@
                         <label class="col-sm-2 col-form-label" for="basic-default-name">Roles</label>
                         <div class="col-10">
 
+                            <div class="form-check mt-3 d-inline-block mx-1 primary-check">
+                                <input class="form-check-input " type="checkbox" name='select_all' id="defaultCheck">
+                                <label class="form-check-label" for="defaultCheck">
+                                    Primary Check
+                                </label>
+                            </div>
+
                             @foreach ($permission as $permission_opt)
 
                                 <div class="form-check mt-3 d-inline-block mx-1">
-                                    <input class="form-check-input  @error('roles') border-danger @enderror" type="checkbox"
-                                        value="{{ $permission_opt->id }}" name='permission[]'
+                                    <input class="form-check-input permission  @error('roles') border-danger @enderror"
+                                        type="checkbox" value="{{ $permission_opt->id }}" name='permission[]'
                                         id="defaultCheck{{ $permission_opt->id }}"
                                         @if (old('roles')) @foreach (old('roles') as $role_opt)
                             @if ($role_opt == $permission_opt->name)
@@ -45,16 +52,32 @@
 
 
                     </div>
-                </div>
-
-                    <div class="row justify-content-end mt-3">
-                        <div class="col-sm-10 d-flex justify-content-between">
-                            <button type="submit" class="btn btn-primary">Send</button>
-                            <a href="{{ route('roles.all') }}" class="btn btn-secondary">back</a>
-                        </div>
-                    </div>
-                </form>
             </div>
+
+            <div class="row justify-content-end mt-3">
+                <div class="col-sm-10 d-flex justify-content-between">
+                    <button type="submit" class="btn btn-primary">Send</button>
+                    <a href="{{ route('roles.all') }}" class="btn btn-secondary">back</a>
+                </div>
+            </div>
+            </form>
         </div>
     </div>
+    </div>
+@endsection
+
+@section('js')
+    <script>
+        $(document).ready(function (){
+            $('input[name="select_all"]').click(function() {
+                $('input[name="permission[]"]').prop('checked',true);
+            });
+
+            $('input[name="permission[]"]').on('change',function (){
+                if(this.checked == false){
+                    $('input[name="select_all"]').prop('checked',false);
+                }
+            });
+        });
+    </script>
 @endsection

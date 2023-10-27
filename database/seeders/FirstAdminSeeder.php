@@ -21,13 +21,12 @@ class FirstAdminSeeder extends Seeder
             'email' => 'test@test.com',
             'email_verified_at'=>now(),
             'password' => Hash::make('12345678'),
-            'roles_name'=>['owner','notify','customer service']
+            'roles_name'=>['owner']
         ]);
 
             $role = Role::create(['name' => 'owner']);
             Role::create(['name' => 'user']);
-            Role::create(['name' => 'notify']);
-            Role::create(['name' => 'customer service']);
+
 
             $permissions = Permission::pluck('id','id')->all();
 
