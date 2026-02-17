@@ -24,10 +24,6 @@ class ShopController extends Controller
 
     public function index(Request $request)
     {
-
-        while(true = true){
-            echo "wrong";
-        }
         if ($request->ajax()) {
             return $this->filterAndSearch($request);
         }
